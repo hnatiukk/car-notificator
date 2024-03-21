@@ -1,19 +1,15 @@
 package org.hnatiuk.carnotificator.config;
 
 import lombok.RequiredArgsConstructor;
-import org.hnatiuk.carnotificator.service.PersonDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
@@ -22,33 +18,30 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final PersonDetailsService personDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/api/v1/auth/login", "/api/v1/auth/signup").permitAll()
-                                .requestMatchers("/admin").hasRole("ADMIN")
+                        requests.requestMatchers("/login", "/api/v1/auth/login", "/api/v1/auth/signup").permitAll()
                                 .anyRequest().authenticated())
+                .formLogin((formLogin) ->
+                        formLogin
+                                .usernameParameter("email")
+                                .passwordParameter("password")
+                                .loginProcessingUrl("/api/v1/auth/login")
+                                .defaultSuccessUrl("/")
+                                .failureUrl("/login?error"))
                 .logout(logout ->
-                        logout.logoutUrl("/logout")
-                                .addLogoutHandler(new SecurityContextLogoutHandler())
-                );
+                        logout.logoutUrl("/api/v1/auth/logout"))
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
         return http.build();
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authManager() {
-        var authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(personDetailsService);
-        authProvider.setPasswordEncoder(getPasswordEncoder());
-        return new ProviderManager(authProvider);
     }
 }
