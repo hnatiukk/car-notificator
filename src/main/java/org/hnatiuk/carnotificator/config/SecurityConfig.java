@@ -22,23 +22,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final PersonDetailsService personDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/login", "/signup", "/error").permitAll()
+                        requests.requestMatchers("/login", "/signup").permitAll()
                                 .requestMatchers("/admin").hasRole("ADMIN")
                                 .anyRequest().authenticated())
-                .formLogin(formLogin ->
-                        formLogin
-                                .usernameParameter("email")
-                                .passwordParameter("password")
-                                .loginPage("/login")
-                                .failureUrl("/login?error")
-                                .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/", true)
-                ).logout(logout ->
+                .logout(logout ->
                         logout.logoutUrl("/logout"));
         return http.build();
     }
@@ -47,6 +40,7 @@ public class SecurityConfig {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authManager() {
         var authProvider = new DaoAuthenticationProvider();
