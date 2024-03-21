@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
@@ -28,11 +29,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/login", "/signup").permitAll()
+                        requests.requestMatchers("/api/v1/auth/login", "/api/v1/auth/signup").permitAll()
                                 .requestMatchers("/admin").hasRole("ADMIN")
                                 .anyRequest().authenticated())
                 .logout(logout ->
-                        logout.logoutUrl("/logout"));
+                        logout.logoutUrl("/logout")
+                                .addLogoutHandler(new SecurityContextLogoutHandler())
+                );
         return http.build();
     }
 

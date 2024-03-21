@@ -36,10 +36,10 @@ public class Subscription {
     private Integer mileageStart;
     @Column(name = "mileage_end")
     private Integer mileageEnd;
-    @Column(name = "transmission")
+    @Column(name = "transmission", columnDefinition = "int4")
     @Enumerated(EnumType.ORDINAL)
     private TransmissionType transmissionType;
-    @Column(name = "fuel_type")
+    @Column(name = "fuel_type", columnDefinition = "int4")
     @Enumerated(EnumType.ORDINAL)
     private FuelType fuelType;
     @Column(name = "is_active")
