@@ -47,6 +47,6 @@ public class Subscription {
     @Column(name = "request_url")
     private String requestUrl;
     @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id");
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
 }
