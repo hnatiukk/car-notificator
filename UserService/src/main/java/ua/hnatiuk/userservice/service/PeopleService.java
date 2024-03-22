@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.repository.PeopleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,5 +29,12 @@ public class PeopleService {
 
     public Optional<Person> findByEmail(String email) {
         return repository.findByEmail(email);
+    }
+    public Person findByEmailAndInitSubscriptions(String email) {
+        Person person = repository.findByEmail(email).get();
+
+        Hibernate.initialize(person.getSubscriptions());
+
+        return person;
     }
 }
