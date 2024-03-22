@@ -30,7 +30,7 @@ public class SecurityConfig {
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .loginProcessingUrl("/process_login")
-                                .defaultSuccessUrl("/", true)
+                                .defaultSuccessUrl("/subscriptions", true)
                                 .failureUrl("/login?error"))
                 .logout(logout ->
                         logout.logoutUrl("/logout"))    ;
