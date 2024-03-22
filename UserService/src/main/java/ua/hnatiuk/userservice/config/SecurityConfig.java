@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,19 +23,17 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/login", "/api/v1/auth/login", "/api/v1/auth/signup").permitAll()
+                        requests.requestMatchers("/login", "/signup").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin((formLogin) ->
                         formLogin
                                 .usernameParameter("email")
                                 .passwordParameter("password")
-                                .loginProcessingUrl("/api/v1/auth/login")
-                                .defaultSuccessUrl("/")
+                                .loginProcessingUrl("/process_login")
+                                .defaultSuccessUrl("/", true)
                                 .failureUrl("/login?error"))
                 .logout(logout ->
-                        logout.logoutUrl("/api/v1/auth/logout"))
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                        logout.logoutUrl("/logout"))    ;
         return http.build();
     }
 
