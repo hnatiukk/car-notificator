@@ -8,6 +8,6 @@ import java.util.Optional;
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
-public interface PersonRepository extends JpaRepository<Person, Long> {
+public interface PeopleRepository extends JpaRepository<Person, Long> {
     Optional<Person> findByEmail(String email);
 }

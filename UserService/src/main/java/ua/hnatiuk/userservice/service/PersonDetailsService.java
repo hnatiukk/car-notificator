@@ -2,7 +2,7 @@ package ua.hnatiuk.userservice.service;
 
 import lombok.RequiredArgsConstructor;
 import ua.hnatiuk.userservice.model.entity.Person;
-import ua.hnatiuk.userservice.repository.PersonRepository;
+import ua.hnatiuk.userservice.repository.PeopleRepository;
 import ua.hnatiuk.userservice.security.PersonDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PersonDetailsService implements UserDetailsService {
 
-    private final PersonRepository repository;
+    private final PeopleRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

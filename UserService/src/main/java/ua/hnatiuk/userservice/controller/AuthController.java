@@ -3,9 +3,11 @@ package ua.hnatiuk.userservice.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import ua.hnatiuk.userservice.model.entity.Person;
-import ua.hnatiuk.userservice.service.AuthService;
+import ua.hnatiuk.userservice.service.PeopleService;
 import org.springframework.web.bind.annotation.*;
+import ua.hnatiuk.userservice.util.PersonValidator;
 
 
 /**
@@ -14,13 +16,22 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    private final AuthService service;
+    private final PeopleService service;
+    private final PersonValidator validator;
+
     @GetMapping("/signup")
     public String getSignUpPage(@ModelAttribute("person") Person person) {
         return "auth/signup";
     }
+
     @PostMapping("/signup")
-    public String signUp(@ModelAttribute("person") @Valid Person person) {
+    public String signUp(@ModelAttribute("person") @Valid Person person,
+                         BindingResult bindingResult) {
+        validator.validate(person, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "auth/signup";
+        }
 
         service.register(person);
 
