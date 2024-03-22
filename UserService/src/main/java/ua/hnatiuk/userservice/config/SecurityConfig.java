@@ -27,6 +27,7 @@ public class SecurityConfig {
                                 .anyRequest().authenticated())
                 .formLogin((formLogin) ->
                         formLogin
+                                .loginPage("/login")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
                                 .loginProcessingUrl("/process_login")

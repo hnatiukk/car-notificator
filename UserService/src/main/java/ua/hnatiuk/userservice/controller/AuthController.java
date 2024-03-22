@@ -19,8 +19,12 @@ public class AuthController {
     private final PeopleService service;
     private final PersonValidator validator;
 
+    @GetMapping("/login")
+    public String getLoginPage(@ModelAttribute("person") Person person) {
+        return "auth/login";
+    }
     @GetMapping("/signup")
-    public String getSignUpPage(@ModelAttribute("person") Person person) {
+    public String getSignupPage(@ModelAttribute("person") Person person) {
         return "auth/signup";
     }
 
