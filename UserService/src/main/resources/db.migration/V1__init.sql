@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.subscription
     mileage_end integer,
     transmission integer,
     fuel_type integer,
-    is_active boolean NOT NULL,
+    is_active boolean NOT NULL DEFAULT true,
     request_url character varying COLLATE pg_catalog."default" NOT NULL,
     person_id bigint,
     CONSTRAINT subscription_pkey PRIMARY KEY (id),
