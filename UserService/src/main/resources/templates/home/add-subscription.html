@@ -10,7 +10,8 @@
 <div class="flex justify-center pt-10">
     <div class="w-full max-w-xs">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:object="${subscription}" action="/subscriptions"
-              method="POST">
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="brand-choice">
                     Марка
@@ -20,6 +21,7 @@
                 <datalist id="brands">
                     <option th:each="brand : ${brands}" th:value="${brand}"></option>
                 </datalist>
+                <p th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" style="color: red"></p>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="model-choice">
@@ -30,6 +32,7 @@
                 <datalist id="models">
                     <option th:each="model : ${models}" th:value="${model}"></option>
                 </datalist>
+                <p th:if="${#fields.hasErrors('model')}" th:errors="*{model}" style="color: red"></p>
             </div>
             <div class="mb-4 flex flex-row gap-2">
                 <div>
@@ -66,14 +69,14 @@
             <div class="mb-4 flex flex-row gap-2">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-start-choice">
-                        Пробіг від
+                        Пробіг від, км
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="mileage-start-choice" type="number" th:field="*{mileageStart}"/>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-end-choice">
-                        Пробіг до
+                        Пробіг до, км
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="mileage-end-choice" type="number" th:field="*{mileageEnd}"/>
@@ -85,8 +88,9 @@
                 </label>
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="transmission-type-choice" th:field="*{transmissionType}">
-                    <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType}"
-                            th:text="${transmissionType.toString()}"></option>
+                    <option th:each="transmissionType : ${T(ua.hnatiuk.userservice.model.enums.TransmissionType).values()}"
+                            th:value="${transmissionType}"
+                            th:text="${transmissionType.getName()}"></option>
                 </select>
             </div>
             <div class="mb-4">
@@ -95,8 +99,9 @@
                 </label>
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="fuel-type-choice" th:field="*{fuelType}">
-                    <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType}"
-                            th:text="${fuelType.toString()}"></option>
+                    <option th:each="fuelType : ${T(ua.hnatiuk.userservice.model.enums.FuelType).values()}"
+                            th:value="${fuelType}"
+                            th:text="${fuelType.getName()}"></option>
                 </select>
             </div>
             <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"

@@ -1,10 +1,12 @@
 package ua.hnatiuk.userservice.model.enums;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
+@Getter
 @RequiredArgsConstructor
 public enum TransmissionType {
     MANUAL("Ручна / Механіка"),
@@ -14,8 +16,4 @@ public enum TransmissionType {
     VARIATOR("Варіатор");
     private final String name;
 
-    @Override
-    public String toString() {
-        return name;
-    }
 }
