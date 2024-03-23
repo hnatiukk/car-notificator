@@ -8,6 +8,7 @@ import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Hnatiuk Volodymyr on 22.03.2024.
@@ -18,10 +19,18 @@ import java.util.List;
 public class SubscriptionsService {
     private final SubscriptionsRepository repository;
     private final PeopleService peopleService;
+    private final JsonLoaderService jsonLoaderService;
 
     public List<Subscription> findAllByEmail(String email) {
         Person person = peopleService.findByEmailAndInitSubscriptions(email);
 
         return person.getSubscriptions();
+    }
+    public Set<String> getBrands() {
+        return jsonLoaderService.getBrands().keySet();
+    }
+
+    public Set<String> getModels() {
+        return jsonLoaderService.getModels().keySet();
     }
 }

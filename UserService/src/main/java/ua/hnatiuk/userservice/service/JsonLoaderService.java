@@ -23,25 +23,25 @@ public class JsonLoaderService {
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
     @Getter
-    private final Map<String, Integer> marks = new HashMap<>();
+    private final Map<String, Integer> brands = new HashMap<>();
     @Getter
     private final Map<String, Integer> models = new HashMap<>();
 
     @PostConstruct
     public void init() {
         try {
-            loadMarks();
+            loadBrands();
             loadModels();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    private void loadMarks() throws IOException {
+    private void loadBrands() throws IOException {
 
         Resource resource = resourceLoader.getResource("classpath:static/json/marks.json");
 
-        fillMap(resource, marks);
+        fillMap(resource, brands);
     }
 
     private void loadModels() throws IOException {
