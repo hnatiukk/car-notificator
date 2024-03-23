@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
-public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+public interface SubscriptionsRepository extends JpaRepository<Subscription, Long> {
 }
