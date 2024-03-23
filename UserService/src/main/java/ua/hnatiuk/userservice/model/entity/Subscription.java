@@ -50,7 +50,7 @@ public class Subscription {
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "request_url")
-    private String requestUrl;
+    private String requestParams;
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;

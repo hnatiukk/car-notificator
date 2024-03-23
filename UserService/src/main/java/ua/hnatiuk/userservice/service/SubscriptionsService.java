@@ -9,6 +9,7 @@ import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,11 +38,47 @@ public class SubscriptionsService {
     @Transactional
     public void addSubscription(Subscription subscription, Principal principal) {
         subscription.setIsActive(true);
-        subscription.setRequestUrl("some_url");
+        subscription.setRequestParams(generateRequestParams(subscription));
         Person owner = peopleService.findByEmailAndInitSubscriptions(principal.getName());
         subscription.setOwner(owner);
         owner.getSubscriptions().add(subscription);
 
         repository.save(subscription);
+    }
+
+    private String generateRequestParams(Subscription subscription) {
+        Map<String, Integer> brands = jsonLoaderService.getBrands();
+        Map<String, Integer> models = jsonLoaderService.getModels();
+        StringBuilder params = new StringBuilder();
+
+        params.append("&category_id=1");
+        params.append("&marka_id=").append(brands.get(subscription.getBrand()));
+        params.append("&model_id=").append(models.get(subscription.getModel()));
+        if (subscription.getPriceStart() != null) {
+            params.append("&price_ot=").append(subscription.getPriceStart());
+        }
+        if (subscription.getPriceEnd() != null) {
+            params.append("&price_do=").append(subscription.getPriceEnd());
+        }
+        if (subscription.getYearStart() != null) {
+            params.append("&s_yers=").append(subscription.getYearStart());
+        }
+        if (subscription.getYearEnd() != null) {
+            params.append("&po_yers=").append(subscription.getYearEnd());
+        }
+        if (subscription.getMileageStart() != null) {
+            params.append("&raceFrom=").append(subscription.getMileageStart());
+        }
+        if (subscription.getMileageEnd() != null) {
+            params.append("&raceTo=").append(subscription.getMileageEnd());
+        }
+        if (subscription.getTransmissionType() != null) {
+            params.append("&gearbox=").append(subscription.getTransmissionType().ordinal() + 1);
+        }
+        if (subscription.getFuelType() != null) {
+            params.append("&type=").append(subscription.getFuelType().ordinal() + 1);
+        }
+
+        return params.toString();
     }
 }
