@@ -11,6 +11,7 @@ import ua.hnatiuk.userservice.service.PeopleService;
 import ua.hnatiuk.userservice.service.SubscriptionsService;
 
 import java.security.Principal;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,10 +25,24 @@ public class SubscriptionsController {
 
     @GetMapping
     public String home(Principal principal, Model model) {
-        List<Subscription> subscriptions = service.findAllByEmail(principal.getName());
+        List<Subscription> activeSubscriptions = new LinkedList<>();
+        List<Subscription> disabledSubscriptions = new LinkedList<>();
 
-        model.addAttribute("subscriptions", subscriptions);
+        service.findAllByEmail(principal.getName())
+                        .forEach(subscription -> {
+                            if (subscription.getIsActive()){
+                                activeSubscriptions.add(subscription);
+                            }
+                            else disabledSubscriptions.add(subscription);
+                        });
+
+        model.addAttribute("activeSubscriptions", activeSubscriptions);
+        model.addAttribute("disabledSubscriptions", disabledSubscriptions);
 
         return "home/subscriptions";
+    }
+    @GetMapping("/add")
+    public String getAddSubscriptionPage() {
+        return "home/add-subscription";
     }
 }
