@@ -1,7 +1,6 @@
 package ua.hnatiuk.userservice.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 import ua.hnatiuk.userservice.model.enums.FuelType;
 import ua.hnatiuk.userservice.model.enums.TransmissionType;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
