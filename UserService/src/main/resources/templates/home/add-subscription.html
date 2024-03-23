@@ -41,6 +41,7 @@
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="price-start-choice" type="number" th:field="*{priceStart}"/>
+                    <p th:if="${#fields.hasErrors('priceStart')}" th:errors="*{priceStart}" style="color: red"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="price-end-choice">
@@ -57,6 +58,7 @@
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="year-start-choice" type="number" th:field="*{yearStart}"/>
+                    <p th:if="${#fields.hasErrors('yearStart')}" th:errors="*{yearStart}" style="color: red"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="year-end-choice">
@@ -64,6 +66,7 @@
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="year-end-choice" type="number" th:field="*{yearEnd}"/>
+
                 </div>
             </div>
             <div class="mb-4 flex flex-row gap-2">
@@ -73,6 +76,7 @@
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="mileage-start-choice" type="number" th:field="*{mileageStart}"/>
+                    <p th:if="${#fields.hasErrors('mileageStart')}" th:errors="*{mileageStart}" style="color: red"></p>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-end-choice">

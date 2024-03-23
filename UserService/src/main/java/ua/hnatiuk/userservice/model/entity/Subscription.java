@@ -1,11 +1,17 @@
 package ua.hnatiuk.userservice.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import ua.hnatiuk.userservice.model.enums.FuelType;
 import ua.hnatiuk.userservice.model.enums.TransmissionType;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
@@ -14,6 +20,7 @@ import ua.hnatiuk.userservice.model.enums.TransmissionType;
 @Table(name = "subscription")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class Subscription {
     @Id
@@ -21,8 +28,10 @@ public class Subscription {
     @Column(name = "id")
     private Long id;
     @Column(name = "brand")
+    @NotEmpty(message = "Не може бути пустим")
     private String brand;
     @Column(name = "model")
+    @NotEmpty(message = "Не може бути пустим")
     private String model;
     @Column(name = "price_start")
     private Integer priceStart;
