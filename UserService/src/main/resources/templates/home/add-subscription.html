@@ -8,7 +8,7 @@
 <body>
 <header th:insert="~{blocks/header :: header}"></header>
 <div class="flex justify-center pt-10">
-    <div class="w-full max-w-xs">
+    <div class="w-full max-w-max">
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:object="${subscription}" action="/subscriptions"
               method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -72,7 +72,7 @@
             <div class="mb-4 flex flex-row gap-2">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-start-choice">
-                        Пробіг від, км
+                        Пробіг від, тис. км
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="mileage-start-choice" type="number" th:field="*{mileageStart}"/>
@@ -80,7 +80,7 @@
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-end-choice">
-                        Пробіг до, км
+                        Пробіг до, тис. км.
                     </label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                            id="mileage-end-choice" type="number" th:field="*{mileageEnd}"/>
