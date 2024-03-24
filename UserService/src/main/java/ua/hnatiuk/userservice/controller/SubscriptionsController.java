@@ -88,4 +88,28 @@ public class SubscriptionsController {
         service.update(subscription);
         return "redirect:/subscriptions";
     }
+    @GetMapping("/{id}/disable")
+    public String disableSubscription(@PathVariable("id") Long id, Principal principal){
+        Optional<Subscription> subscriptionOptional = service.findById(id);
+
+        if (subscriptionOptional.isEmpty() ||
+                !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            return "redirect:/error";
+        }
+
+        service.disable(subscriptionOptional.get());
+        return "redirect:/subscriptions";
+    }
+    @GetMapping("/{id}/activate")
+    public String activateSubscription(@PathVariable("id") Long id, Principal principal){
+        Optional<Subscription> subscriptionOptional = service.findById(id);
+
+        if (subscriptionOptional.isEmpty() ||
+                !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            return "redirect:/error";
+        }
+
+        service.activate(subscriptionOptional.get());
+        return "redirect:/subscriptions";
+    }
 }

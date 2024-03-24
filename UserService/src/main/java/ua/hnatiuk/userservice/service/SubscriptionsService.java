@@ -102,4 +102,14 @@ public class SubscriptionsService {
                 subscription.getFuelType(),
                 subscription.getRequestParams());
     }
+
+    public void disable(Subscription subscription) {
+        subscription.setIsActive(false);
+        repository.save(subscription);
+    }
+
+    public void activate(Subscription subscription) {
+        subscription.setIsActive(true);
+        repository.save(subscription);
+    }
 }
