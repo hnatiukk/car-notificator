@@ -10,6 +10,7 @@ import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -80,5 +81,25 @@ public class SubscriptionsService {
         }
 
         return params.toString();
+    }
+
+    public Optional<Subscription> findById(Long id) {
+        return repository.findById(id);
+    }
+    @Transactional
+    public void update(Subscription subscription) {
+        subscription.setRequestParams(generateRequestParams(subscription));
+        repository.updateSubscription(subscription.getId(),
+                subscription.getBrand(),
+                subscription.getModel(),
+                subscription.getPriceStart(),
+                subscription.getPriceEnd(),
+                subscription.getYearStart(),
+                subscription.getYearEnd(),
+                subscription.getMileageStart(),
+                subscription.getMileageEnd(),
+                subscription.getTransmissionType(),
+                subscription.getFuelType(),
+                subscription.getRequestParams());
     }
 }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ua" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагувати підписку</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<header th:insert="~{blocks/header :: header}"></header>
+<div class="flex justify-center pt-10">
+    <div class="w-full max-w-max">
+        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:method="PATCH"
+              th:action="@{/subscriptions/{id}(id=${subscription.getId()})}" th:object="${subscription}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="brand-choice">
+                    Марка
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       list="brands" id="brand-choice" th:field="*{brand}"/>
+                <datalist id="brands">
+                    <option th:each="brand : ${brands}" th:value="${brand}"></option>
+                </datalist>
+                <p th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" style="color: red"></p>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="model-choice">
+                    Модель
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       list="models" id="model-choice" th:field="*{model}"/>
+                <datalist id="models">
+                    <option th:each="model : ${models}" th:value="${model}"></option>
+                </datalist>
+                <p th:if="${#fields.hasErrors('model')}" th:errors="*{model}" style="color: red"></p>
+            </div>
+            <div class="mb-4 flex flex-row gap-2">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="price-start-choice">
+                        Ціна від, $
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="price-start-choice" type="number" th:field="*{priceStart}"/>
+                    <p th:if="${#fields.hasErrors('priceStart')}" th:errors="*{priceStart}" style="color: red"></p>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="price-end-choice">
+                        Ціна до, $
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="price-end-choice" type="number" th:field="*{priceEnd}"/>
+                </div>
+            </div>
+            <div class="mb-4 flex flex-row gap-2">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="year-start-choice">
+                        Рік від
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="year-start-choice" type="number" th:field="*{yearStart}"/>
+                    <p th:if="${#fields.hasErrors('yearStart')}" th:errors="*{yearStart}" style="color: red"></p>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="year-end-choice">
+                        Рік до
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="year-end-choice" type="number" th:field="*{yearEnd}"/>
+
+                </div>
+            </div>
+            <div class="mb-4 flex flex-row gap-2">
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-start-choice">
+                        Пробіг від, тис. км
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="mileage-start-choice" type="number" th:field="*{mileageStart}"/>
+                    <p th:if="${#fields.hasErrors('mileageStart')}" th:errors="*{mileageStart}" style="color: red"></p>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="mileage-end-choice">
+                        Пробіг до, тис. км.
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           id="mileage-end-choice" type="number" th:field="*{mileageEnd}"/>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="transmission-type-choice">
+                    Коробка передач
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="transmission-type-choice" th:field="*{transmissionType}">
+                    <option th:each="transmissionType : ${T(ua.hnatiuk.userservice.model.enums.TransmissionType).values()}"
+                            th:value="${transmissionType}"
+                            th:text="${transmissionType.getName()}"></option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="fuel-type-choice">
+                    Тип палива
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="fuel-type-choice" th:field="*{fuelType}">
+                    <option th:each="fuelType : ${T(ua.hnatiuk.userservice.model.enums.FuelType).values()}"
+                            th:value="${fuelType}"
+                            th:text="${fuelType.getName()}"></option>
+                </select>
+            </div>
+            <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                    type="submit">
+                Редагувати
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
