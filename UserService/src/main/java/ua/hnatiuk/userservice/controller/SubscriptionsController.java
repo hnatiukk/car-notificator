@@ -112,4 +112,10 @@ public class SubscriptionsController {
         service.activate(subscriptionOptional.get());
         return "redirect:/subscriptions";
     }
+    @DeleteMapping("/{id}")
+    public String deleteSubscription(@PathVariable("id") Long id) {
+        service.deleteById(id);
+
+        return "redirect:/subscriptions";
+    }
 }

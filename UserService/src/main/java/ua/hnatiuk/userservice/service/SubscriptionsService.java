@@ -112,4 +112,8 @@ public class SubscriptionsService {
         subscription.setIsActive(true);
         repository.save(subscription);
     }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
 }
