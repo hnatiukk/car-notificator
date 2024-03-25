@@ -21,7 +21,6 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "email")
-    @Email(message = "Це не емейл")
     private String email;
     @Column(name = "password")
     private String password;
