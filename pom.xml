@@ -19,7 +19,7 @@
     </properties>
     <modules>
         <module>user-service</module>
-        <module>telegram-notification-service</module>
+        <module>notification-service</module>
     </modules>
     <dependencies>
         <dependency>

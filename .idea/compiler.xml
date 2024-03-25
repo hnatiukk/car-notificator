@@ -7,8 +7,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="notification-service" />
         <module name="user-service" />
-        <module name="telegram-notification-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -20,7 +20,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CarNotificator" options="" />
       <module name="carnotificator" options="-parameters" />
-      <module name="telegram-notification-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

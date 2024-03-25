@@ -19,12 +19,12 @@ import java.util.regex.Pattern;
  * @author Hnatiuk Volodymyr on 25.03.2024.
  */
 @Component
-public class NotificationBot extends TelegramLongPollingBot {
+public class TelegramNotificationBot extends TelegramLongPollingBot {
     private final PeopleService peopleService;
 
     @Autowired
-    public NotificationBot(@Value("${telegram.apikey}") String botToken,
-                           PeopleService peopleService) {
+    public TelegramNotificationBot(@Value("${telegram.apikey}") String botToken,
+                                   PeopleService peopleService) {
         super(botToken);
         this.peopleService = peopleService;
     }
@@ -36,29 +36,8 @@ public class NotificationBot extends TelegramLongPollingBot {
         Long chatId = update.getMessage().getChatId();
         String userMessageText = update.getMessage().getText();
 
-        String response;
-
-        if (userMessageText.startsWith("/link")) {
-            String[] split = userMessageText.split(" ");
-            if (split.length != 2) {
-                response = "Введіть у форматі:\n/link \"email адреса, на яку реєструвались\"";
-            } else {
-                try {
-                    String email = split[1];
-                    if (Pattern.matches("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", email)) {
-                        peopleService.assignChatId(email, chatId);
-                        response = "Ви успішно прив`язали телеграм.";
-                    }
-                    else response = "Це не email.";
-                } catch (EmailNotFoundException e) {
-                    response = "Такий email не зареєстровано.";
-                }
-            }
-        } else
-            response = "Щоб з`єднати ваш телеграм з CarNotificator, відправте:\n/link \"email адреса, на яку реєструвались\"";
-
         SendMessage message = new SendMessage();
-        message.setText(response);
+        message.setText(tryAssignChatId(userMessageText, chatId));
         message.setChatId(chatId);
 
         try {
@@ -66,6 +45,29 @@ public class NotificationBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String tryAssignChatId(String userMessageText, Long chatId) {
+        String response;
+
+        if (userMessageText.startsWith("/link")) {
+            String[] split = userMessageText.split(" ");
+            if (split.length != 2) {
+                response = "Введіть у форматі:\n\n/link \"email адреса, на яку реєструвались\"";
+            } else {
+                try {
+                    String email = split[1];
+                    if (Pattern.matches("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", email)) {
+                        peopleService.assignChatId(email, chatId);
+                        response = "Ви успішно прив`язали телеграм.";
+                    } else response = "Це не email.";
+                } catch (EmailNotFoundException e) {
+                    response = "Такий email не зареєстровано.";
+                }
+            }
+        } else
+            response = "Щоб з`єднати ваш телеграм з CarNotificator, відправте:\n\n/link \"email адреса, на яку реєструвались\"";
+        return response;
     }
 
     public void sendMessage(Long chatId, String text) {

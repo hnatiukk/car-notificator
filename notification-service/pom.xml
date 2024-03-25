@@ -7,7 +7,7 @@
         <artifactId>CarNotificator</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>telegram-notification-service</artifactId>
+    <artifactId>notification-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>telegram-notification-service</name>
     <description>telegram-notification-service</description>
