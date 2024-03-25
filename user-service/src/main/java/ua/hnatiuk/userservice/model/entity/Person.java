@@ -36,8 +36,4 @@ public class Person {
     private String role;
     @OneToMany(mappedBy = "owner")
     private List<Subscription> subscriptions;
-    public Person(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }
