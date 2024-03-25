@@ -7,7 +7,7 @@ Web service that serves to send notifications about the availability of new cars
   - Spring Security
   - Spring Data JPA
   - Spring MVC
-  - Spring test
+  - Spring Test
 - Maven
 - Hibernate
 - PostgreSQL
