@@ -9,7 +9,7 @@
     </parent>
     <artifactId>user-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>UserService</name>
+    <name>user-service</name>
     <description>UserService</description>
     <properties>
         <java.version>21</java.version>
