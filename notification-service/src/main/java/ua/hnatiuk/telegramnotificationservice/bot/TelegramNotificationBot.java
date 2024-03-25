@@ -78,14 +78,4 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
     public String getBotUsername() {
         return "AutoRiaNotificatorBot";
     }
-
-    @PostConstruct
-    private void registerBot() {
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(this);
-        } catch (TelegramApiException e) {
-            System.err.println("Не вдалось зареєструвати бота");
-        }
-    }
 }
