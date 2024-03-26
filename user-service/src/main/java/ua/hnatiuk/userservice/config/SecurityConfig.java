@@ -23,7 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests ->
                         requests.requestMatchers("/login", "/signup").permitAll()
                                 .anyRequest().authenticated())
-                .formLogin((formLogin) ->
+                .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")
                                 .usernameParameter("email")

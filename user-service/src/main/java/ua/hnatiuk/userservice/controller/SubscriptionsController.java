@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.model.entity.Subscription;
+import ua.hnatiuk.userservice.service.PeopleService;
 import ua.hnatiuk.userservice.service.SubscriptionsService;
 import ua.hnatiuk.userservice.util.SubscriptionValidator;
 
@@ -23,14 +25,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SubscriptionsController {
     private final SubscriptionsService service;
+    private final PeopleService peopleService;
     private final SubscriptionValidator validator;
 
     @GetMapping
     public String home(Principal principal, Model model) {
+        Person person = peopleService.findByEmailAndInitSubscriptions(principal.getName());
+
+        if (person.getTgChatId() == null) {
+            return "redirect:/account?no_tg";
+        }
+
         List<Subscription> activeSubscriptions = new LinkedList<>();
         List<Subscription> disabledSubscriptions = new LinkedList<>();
 
-        service.findAllByEmail(principal.getName())
+        person.getSubscriptions()
                 .forEach(subscription -> {
                     if (subscription.getIsActive()) {
                         activeSubscriptions.add(subscription);
@@ -88,8 +97,9 @@ public class SubscriptionsController {
         service.update(subscription);
         return "redirect:/subscriptions";
     }
+
     @GetMapping("/{id}/disable")
-    public String disableSubscription(@PathVariable("id") Long id, Principal principal){
+    public String disableSubscription(@PathVariable("id") Long id, Principal principal) {
         Optional<Subscription> subscriptionOptional = service.findById(id);
 
         if (subscriptionOptional.isEmpty() ||
@@ -100,8 +110,9 @@ public class SubscriptionsController {
         service.disable(subscriptionOptional.get());
         return "redirect:/subscriptions";
     }
+
     @GetMapping("/{id}/activate")
-    public String activateSubscription(@PathVariable("id") Long id, Principal principal){
+    public String activateSubscription(@PathVariable("id") Long id, Principal principal) {
         Optional<Subscription> subscriptionOptional = service.findById(id);
 
         if (subscriptionOptional.isEmpty() ||
@@ -112,6 +123,7 @@ public class SubscriptionsController {
         service.activate(subscriptionOptional.get());
         return "redirect:/subscriptions";
     }
+
     @DeleteMapping("/{id}")
     public String deleteSubscription(@PathVariable("id") Long id) {
         service.deleteById(id);
