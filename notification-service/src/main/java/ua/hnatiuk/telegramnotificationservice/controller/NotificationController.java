@@ -17,8 +17,9 @@ public class NotificationController {
     private final NotificationService notificationService;
     @PostMapping("/send")
     public ResponseEntity<HttpStatus> sendMessage(@RequestParam("chat_id") Long chatId,
-                                                  @RequestParam("message") String message) {
-        notificationService.sendNotification(chatId, message);
+                                                  @RequestParam("message") String message,
+                                                  @RequestParam("message") String photoUrl) {
+        notificationService.sendNotificationWithPhoto(chatId, message, photoUrl);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

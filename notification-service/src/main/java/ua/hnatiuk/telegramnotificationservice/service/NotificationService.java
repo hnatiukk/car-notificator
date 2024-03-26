@@ -5,5 +5,5 @@ package ua.hnatiuk.telegramnotificationservice.service;
  */
 public interface NotificationService {
 
-    void sendNotification(Long chatId, String message);
+    void sendNotificationWithPhoto(Long chatId, String message, String photoUrl);
 }

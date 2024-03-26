@@ -12,7 +12,7 @@ import ua.hnatiuk.telegramnotificationservice.bot.TelegramNotificationBot;
 public class TelegramNotificationService implements NotificationService {
     private final TelegramNotificationBot bot;
     @Override
-    public void sendNotification(Long chatId, String message) {
-        bot.sendMessage(chatId, message);
+    public void sendNotificationWithPhoto(Long chatId, String message, String photoUrl) {
+        bot.sendMessageWithPhoto(chatId, message, photoUrl);
     }
 }

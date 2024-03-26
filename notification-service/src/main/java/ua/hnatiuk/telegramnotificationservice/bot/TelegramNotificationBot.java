@@ -1,15 +1,14 @@
 package ua.hnatiuk.telegramnotificationservice.bot;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ua.hnatiuk.telegramnotificationservice.exception.EmailNotFoundException;
 import ua.hnatiuk.telegramnotificationservice.service.PeopleService;
 
@@ -70,8 +69,17 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         return response;
     }
 
-    public void sendMessage(Long chatId, String text) {
+    public void sendMessageWithPhoto(Long chatId, String text, String photoUrl) {
+        SendPhoto message = new SendPhoto();
+        message.setPhoto(new InputFile(photoUrl));
+        message.setCaption(text);
+        message.setChatId(chatId);
 
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
