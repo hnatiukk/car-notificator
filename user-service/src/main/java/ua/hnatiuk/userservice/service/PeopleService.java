@@ -37,4 +37,8 @@ public class PeopleService {
 
         return person;
     }
+
+    public void initSubscriptions(Person person) {
+        Hibernate.initialize(person.getSubscriptions());
+    }
 }

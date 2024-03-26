@@ -30,7 +30,7 @@ public class SubscriptionsController {
 
     @GetMapping
     public String home(Principal principal, Model model) {
-        Person person = peopleService.findByEmailAndInitSubscriptions(principal.getName());
+        Person person = peopleService.findByEmail(principal.getName()).get();
 
         if (person.getTgChatId() == null) {
             return "redirect:/account?no_tg";
@@ -39,6 +39,7 @@ public class SubscriptionsController {
         List<Subscription> activeSubscriptions = new LinkedList<>();
         List<Subscription> disabledSubscriptions = new LinkedList<>();
 
+        peopleService.initSubscriptions(person);
         person.getSubscriptions()
                 .forEach(subscription -> {
                     if (subscription.getIsActive()) {
