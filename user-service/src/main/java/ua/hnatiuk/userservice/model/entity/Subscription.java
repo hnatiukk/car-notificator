@@ -16,7 +16,6 @@ import ua.hnatiuk.userservice.model.enums.TransmissionType;
 @Table(name = "subscription")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Subscription {
     @Id
