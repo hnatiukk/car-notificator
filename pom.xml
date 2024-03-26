@@ -20,6 +20,7 @@
     <modules>
         <module>user-service</module>
         <module>notification-service</module>
+        <module>observer-service</module>
     </modules>
     <dependencies>
         <dependency>

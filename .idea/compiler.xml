@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="observer-service" />
         <module name="notification-service" />
         <module name="user-service" />
       </profile>
@@ -21,6 +22,7 @@
       <module name="CarNotificator" options="" />
       <module name="carnotificator" options="-parameters" />
       <module name="notification-service" options="-parameters" />
+      <module name="observer-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
