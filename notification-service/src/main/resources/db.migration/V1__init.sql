@@ -26,8 +26,9 @@ CREATE TABLE IF NOT EXISTS public.subscription
     transmission integer,
     fuel_type integer,
     is_active boolean NOT NULL DEFAULT true,
-    request_url character varying COLLATE pg_catalog."default" NOT NULL,
     person_id bigint,
+    brand_id integer NOT NULL,
+    model_id integer NOT NULL,
     CONSTRAINT subscription_pkey PRIMARY KEY (id),
     CONSTRAINT person_fkey FOREIGN KEY (person_id)
         REFERENCES public.person (id) MATCH SIMPLE

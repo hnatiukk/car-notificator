@@ -48,8 +48,10 @@ public class Subscription {
     private FuelType fuelType;
     @Column(name = "is_active")
     private Boolean isActive;
-    @Column(name = "request_url")
-    private String requestParams;
+    @Column(name = "brand_id")
+    private Integer brandId;
+    @Column(name = "model_id")
+    private Integer modelId;
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;

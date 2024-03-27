@@ -8,8 +8,6 @@ import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,12 +20,6 @@ public class SubscriptionsService {
     private final SubscriptionsRepository repository;
     private final PeopleService peopleService;
     private final JsonLoaderService jsonLoaderService;
-    @Transactional(readOnly = true)
-    public List<Subscription> findAllByEmail(String email) {
-        Person person = peopleService.findByEmailAndInitSubscriptions(email);
-
-        return person.getSubscriptions();
-    }
 
     public Set<String> getBrands() {
         return jsonLoaderService.getBrands().keySet();
@@ -39,7 +31,8 @@ public class SubscriptionsService {
     @Transactional
     public void addSubscription(Subscription subscription, Principal principal) {
         subscription.setIsActive(true);
-        subscription.setRequestParams(generateRequestParams(subscription));
+        subscription.setBrandId(jsonLoaderService.getBrands().get(subscription.getBrand()));
+        subscription.setModelId(jsonLoaderService.getModels().get(subscription.getModel()));
         Person owner = peopleService.findByEmailAndInitSubscriptions(principal.getName());
         subscription.setOwner(owner);
         owner.getSubscriptions().add(subscription);
@@ -47,48 +40,11 @@ public class SubscriptionsService {
         repository.save(subscription);
     }
 
-    private String generateRequestParams(Subscription subscription) {
-        Map<String, Integer> brands = jsonLoaderService.getBrands();
-        Map<String, Integer> models = jsonLoaderService.getModels();
-        StringBuilder params = new StringBuilder();
-
-        params.append("&category_id=1");
-        params.append("&marka_id=").append(brands.get(subscription.getBrand()));
-        params.append("&model_id=").append(models.get(subscription.getModel()));
-        if (subscription.getPriceStart() != null) {
-            params.append("&price_ot=").append(subscription.getPriceStart());
-        }
-        if (subscription.getPriceEnd() != null) {
-            params.append("&price_do=").append(subscription.getPriceEnd());
-        }
-        if (subscription.getYearStart() != null) {
-            params.append("&s_yers=").append(subscription.getYearStart());
-        }
-        if (subscription.getYearEnd() != null) {
-            params.append("&po_yers=").append(subscription.getYearEnd());
-        }
-        if (subscription.getMileageStart() != null) {
-            params.append("&raceFrom=").append(subscription.getMileageStart());
-        }
-        if (subscription.getMileageEnd() != null) {
-            params.append("&raceTo=").append(subscription.getMileageEnd());
-        }
-        if (subscription.getTransmissionType() != null) {
-            params.append("&gearbox=").append(subscription.getTransmissionType().ordinal() + 1);
-        }
-        if (subscription.getFuelType() != null) {
-            params.append("&type=").append(subscription.getFuelType().ordinal() + 1);
-        }
-
-        return params.toString();
-    }
-
     public Optional<Subscription> findById(Long id) {
         return repository.findById(id);
     }
     @Transactional
     public void update(Subscription subscription) {
-        subscription.setRequestParams(generateRequestParams(subscription));
         repository.updateSubscription(subscription.getId(),
                 subscription.getBrand(),
                 subscription.getModel(),
@@ -100,7 +56,8 @@ public class SubscriptionsService {
                 subscription.getMileageEnd(),
                 subscription.getTransmissionType(),
                 subscription.getFuelType(),
-                subscription.getRequestParams());
+                jsonLoaderService.getBrands().get(subscription.getBrand()),
+                jsonLoaderService.getModels().get(subscription.getModel()));
     }
 
     public void disable(Subscription subscription) {
