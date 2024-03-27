@@ -1,4 +1,4 @@
-package ua.hnatiuk.telegramnotificationservice.model;
+package ua.hnatiuk.telegramnotificationservice.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
