@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import ua.hnatiuk.userservice.model.enums.FuelType;
 import ua.hnatiuk.userservice.model.enums.TransmissionType;
 
