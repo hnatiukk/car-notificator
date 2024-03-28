@@ -20,6 +20,8 @@ public class CarDTO {
     private String model;
     @JsonProperty("USD")
     private Integer price;
+    @JsonProperty("photoData")
+    private PhotoData photoData;
     @JsonProperty("autoData")
     private AutoData autoData;
     @JsonProperty("stateData")

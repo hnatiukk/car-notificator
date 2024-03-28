@@ -3,6 +3,7 @@ package ua.hnatiuk.observerservice.feign.params;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import ua.hnatiuk.observerservice.model.entity.Subscription;
 
 /**
  * @author Hnatiuk Volodymyr on 27.03.2024.
@@ -22,4 +23,19 @@ public class AutoRiaRequestParams {
     private Integer raceTo;
     private Integer gearbox;
     private Integer type;
+    public static AutoRiaRequestParams subscriptionToParams(Subscription subscription) {
+        return AutoRiaRequestParams.builder()
+                .category_id(1)
+                .marka_id(subscription.getBrandId())
+                .model_id(subscription.getModelId())
+                .price_ot(subscription.getPriceStart())
+                .price_do(subscription.getPriceEnd())
+                .s_yers(subscription.getYearStart())
+                .po_yers(subscription.getYearEnd())
+                .raceFrom(subscription.getMileageStart())
+                .raceTo(subscription.getMileageEnd())
+                .gearbox(subscription.getTransmissionType().ordinal() + 1)
+                .type(subscription.getFuelType().ordinal() + 1)
+                .build();
+    }
 }
