@@ -23,8 +23,9 @@ public class AutoRiaRequestParams {
     private Integer raceTo;
     private Integer gearbox;
     private Integer type;
+
     public static AutoRiaRequestParams subscriptionToParams(Subscription subscription) {
-        return AutoRiaRequestParams.builder()
+        AutoRiaRequestParams.AutoRiaRequestParamsBuilder builder = AutoRiaRequestParams.builder()
                 .category_id(1)
                 .marka_id(subscription.getBrandId())
                 .model_id(subscription.getModelId())
@@ -33,9 +34,14 @@ public class AutoRiaRequestParams {
                 .s_yers(subscription.getYearStart())
                 .po_yers(subscription.getYearEnd())
                 .raceFrom(subscription.getMileageStart())
-                .raceTo(subscription.getMileageEnd())
-                .gearbox(subscription.getTransmissionType().ordinal() + 1)
-                .type(subscription.getFuelType().ordinal() + 1)
-                .build();
+                .raceTo(subscription.getMileageEnd());
+
+        if (subscription.getTransmissionType() != null) {
+            builder.gearbox(subscription.getTransmissionType().ordinal() + 1);
+        }
+        if (subscription.getFuelType() != null) {
+            builder.type(subscription.getFuelType().ordinal() + 1);
+        }
+        return builder.build();
     }
 }
