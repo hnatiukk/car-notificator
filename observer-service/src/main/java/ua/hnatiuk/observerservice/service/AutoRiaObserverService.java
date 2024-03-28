@@ -32,7 +32,7 @@ public class AutoRiaObserverService {
     private final AutoRiaClient autoRiaClient;
     private final NotificationServiceClient notificationServiceClient;
 
-    @Scheduled(fixedRate = 61 * 60 * 1000)
+    @Scheduled(fixedRate = 60 * 60 * 1000)
     private void checkAll() {
         List<Subscription> subscriptions = subscriptionsService.getActiveSubscriptions();
 
