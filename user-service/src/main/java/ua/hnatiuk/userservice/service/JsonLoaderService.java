@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Hnatiuk Volodymyr on 23.03.2024.
@@ -23,7 +24,7 @@ public class JsonLoaderService {
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
     @Getter
-    private final Map<String, Integer> brands = new HashMap<>();
+    private final Map<String, Integer> brands = new TreeMap<>();
     @Getter
     private final Map<String, Integer> models = new HashMap<>();
 
