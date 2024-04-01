@@ -1,11 +1,11 @@
-package ua.hnatiuk.telegramnotificationservice.service;
+package ua.hnatiuk.notificationservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.hnatiuk.telegramnotificationservice.exception.EmailNotFoundException;
-import ua.hnatiuk.telegramnotificationservice.model.entity.Person;
-import ua.hnatiuk.telegramnotificationservice.repository.PeopleRepository;
+import ua.hnatiuk.notificationservice.exception.EmailNotFoundException;
+import ua.hnatiuk.notificationservice.model.entity.Person;
+import ua.hnatiuk.notificationservice.repository.PeopleRepository;
 
 import java.util.Optional;
 

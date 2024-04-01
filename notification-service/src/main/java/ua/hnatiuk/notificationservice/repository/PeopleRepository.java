@@ -1,7 +1,7 @@
-package ua.hnatiuk.telegramnotificationservice.repository;
+package ua.hnatiuk.notificationservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.hnatiuk.telegramnotificationservice.model.entity.Person;
+import ua.hnatiuk.notificationservice.model.entity.Person;
 
 import java.util.Optional;
 

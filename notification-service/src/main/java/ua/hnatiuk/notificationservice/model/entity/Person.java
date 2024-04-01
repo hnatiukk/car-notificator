@@ -1,12 +1,9 @@
-package ua.hnatiuk.telegramnotificationservice.model.entity;
+package ua.hnatiuk.notificationservice.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.

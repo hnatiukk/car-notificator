@@ -1,4 +1,4 @@
-package ua.hnatiuk.telegramnotificationservice.bot;
+package ua.hnatiuk.notificationservice.bot;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.hnatiuk.telegramnotificationservice.exception.EmailNotFoundException;
-import ua.hnatiuk.telegramnotificationservice.service.PeopleService;
+import ua.hnatiuk.notificationservice.exception.EmailNotFoundException;
+import ua.hnatiuk.notificationservice.service.PeopleService;
 
 import java.util.regex.Pattern;
 

@@ -5,13 +5,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ua.hnatiuk.observerservice.feign.AutoRiaClient;
 import ua.hnatiuk.observerservice.feign.NotificationServiceClient;
 import ua.hnatiuk.observerservice.feign.params.AutoRiaRequestParams;
 import ua.hnatiuk.observerservice.model.dto.CarDTO;
+import ua.hnatiuk.observerservice.model.dto.MessageDTO;
 import ua.hnatiuk.observerservice.model.entity.Subscription;
 
 
@@ -38,7 +38,6 @@ public class AutoRiaObserverService {
 
         subscriptions.forEach(this::checkSubscription);
     }
-    //@Async
     private void checkSubscription(Subscription subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
@@ -47,30 +46,6 @@ public class AutoRiaObserverService {
         List<CarDTO> newCarDTOs = getNewCarDTOs(newCarIds);
 
         notifyAboutNewCars(newCarDTOs, subscription.getOwner().getTgChatId());
-    }
-
-    private void notifyAboutNewCars(List<CarDTO> carDTOs, Long tgChatId) {
-        for (CarDTO carDTO : carDTOs) {
-            String message = formMessage(carDTO);
-
-            notificationServiceClient.sendNotification(tgChatId, message, carDTO.getPhotoData().getPhotoLink());
-        }
-    }
-
-    private String formMessage(CarDTO carDTO) {
-        return STR."""
-                        Знайдено нову пропозицію!
-
-                        \{carDTO.getBrand()} \{carDTO.getModel()} \{carDTO.getAutoData().getYear()}
-
-                        💵 Ціна: \{carDTO.getPrice()} $
-                        🕹 Коробка: \{carDTO.getAutoData().getTransmission()}
-                        ⚙️ Двигун: \{carDTO.getAutoData().getFuelType()}
-                        🛣 Пробіг: \{carDTO.getAutoData().getMileage()}
-                        🌎 Місцезнаходження: \{carDTO.getStateData().getCity()}, \{carDTO.getStateData().getRegion()}
-
-                        Посилання на оглошення: auto.ria.com/uk\{carDTO.getLink()}
-                        """;
     }
 
     private List<CarDTO> getNewCarDTOs(List<Integer> newCarIds) {
@@ -99,4 +74,30 @@ public class AutoRiaObserverService {
                 .map(JsonElement::getAsInt)
                 .toList();
     }
+
+    private void notifyAboutNewCars(List<CarDTO> carDTOs, Long tgChatId) {
+        for (CarDTO carDTO : carDTOs) {
+            String text = formMessage(carDTO);
+
+            MessageDTO messageDTO = new MessageDTO(tgChatId, text, carDTO.getPhotoData().getPhotoLink());
+            notificationServiceClient.sendNotification(messageDTO);
+        }
+    }
+
+    private String formMessage(CarDTO carDTO) {
+        return STR."""
+                        Знайдено нову пропозицію!
+
+                        \{carDTO.getBrand()} \{carDTO.getModel()} \{carDTO.getAutoData().getYear()}
+
+                        💵 Ціна: \{carDTO.getPrice()} $
+                        🕹 Коробка: \{carDTO.getAutoData().getTransmission()}
+                        ⚙️ Двигун: \{carDTO.getAutoData().getFuelType()}
+                        🛣 Пробіг: \{carDTO.getAutoData().getMileage()}
+                        🌎 Місцезнаходження: \{carDTO.getStateData().getCity()}, \{carDTO.getStateData().getRegion()}
+
+                        Посилання на оглошення: auto.ria.com/uk\{carDTO.getLink()}
+                        """;
+    }
+
 }

@@ -1,4 +1,4 @@
-package ua.hnatiuk.telegramnotificationservice.exception;
+package ua.hnatiuk.notificationservice.exception;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.
