@@ -38,6 +38,7 @@ public class AutoRiaObserverService {
 
         subscriptions.forEach(this::checkSubscription);
     }
+
     private void checkSubscription(Subscription subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
@@ -49,8 +50,6 @@ public class AutoRiaObserverService {
     }
 
     private List<CarDTO> getNewCarDTOs(List<Integer> newCarIds) {
-        List<CarDTO> newCarDTOs = new ArrayList<>(newCarIds.size());
-
         return newCarIds.stream()
                 .map(autoRiaClient::searchCar)
                 .toList();
