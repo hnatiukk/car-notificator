@@ -8,9 +8,10 @@ Web service that serves to send notifications about the availability of new cars
   - Spring Data JPA
   - Spring MVC
   - Spring Test
-- Maven
+- Apache Maven
 - Hibernate
 - PostgreSQL
+- Apache Kafka
 - Flyway
 - Thymeleaf
 - Tailwind CSS

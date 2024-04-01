@@ -15,7 +15,6 @@ import ua.hnatiuk.observerservice.model.dto.MessageDTO;
 import ua.hnatiuk.observerservice.model.entity.Subscription;
 
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +37,7 @@ public class AutoRiaObserverService {
 
         subscriptions.forEach(this::checkSubscription);
     }
+
     private void checkSubscription(Subscription subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
@@ -49,8 +49,6 @@ public class AutoRiaObserverService {
     }
 
     private List<CarDTO> getNewCarDTOs(List<Integer> newCarIds) {
-        List<CarDTO> newCarDTOs = new ArrayList<>(newCarIds.size());
-
         return newCarIds.stream()
                 .map(autoRiaClient::searchCar)
                 .toList();
