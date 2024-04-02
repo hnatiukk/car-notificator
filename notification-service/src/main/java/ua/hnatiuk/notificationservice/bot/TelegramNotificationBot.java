@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
 import ua.hnatiuk.notificationservice.service.PeopleService;
 
 
@@ -51,15 +52,15 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendMessageWithPhoto(Long chatId, String text, String photoUrl) {
+    public void sendMessageWithPhoto(MessageDTO messageDTO) {
         SendPhoto message = new SendPhoto();
-        message.setPhoto(new InputFile(photoUrl));
-        message.setCaption(text);
-        message.setChatId(chatId);
+        message.setPhoto(new InputFile(messageDTO.getPhotoUrl()));
+        message.setCaption(messageDTO.getText());
+        message.setChatId(messageDTO.getChatId());
 
         try {
             execute(message);
-            log.info("Sent message with photo to {}", chatId);
+            log.info("Sent message with photo to {}", messageDTO.getChatId());
         } catch (TelegramApiException e) {
             log.error("TelegramApiException appeared");
             throw new RuntimeException(e);

@@ -19,6 +19,6 @@ public class TelegramNotificationListener implements NotificationListener {
     @KafkaListener(topics = "carnotificator.telegram", groupId = "main", containerFactory = "factory")
     public void sendNotificationWithPhoto(MessageDTO messageDTO) {
         log.debug("Received message from Kafka");
-        bot.sendMessageWithPhoto(messageDTO.getChatId(), messageDTO.getText(), messageDTO.getPhotoUrl());
+        bot.sendMessageWithPhoto(messageDTO);
     }
 }
