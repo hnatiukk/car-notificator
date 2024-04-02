@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.repository.PeopleRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class PeopleService {
     private final PeopleRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -25,6 +27,7 @@ public class PeopleService {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         person.setRole("ROLE_USER");
         repository.save(person);
+        log.info("Successfully registered {}", person.getEmail());
     }
 
     public Optional<Person> findByEmail(String email) {
@@ -33,12 +36,13 @@ public class PeopleService {
     public Person findByEmailAndInitSubscriptions(String email) {
         Person person = repository.findByEmail(email).get();
 
-        Hibernate.initialize(person.getSubscriptions());
+        initSubscriptions(person);
 
         return person;
     }
 
     public void initSubscriptions(Person person) {
         Hibernate.initialize(person.getSubscriptions());
+        log.debug("Initialized subscriptions for {}", person.getEmail());
     }
 }

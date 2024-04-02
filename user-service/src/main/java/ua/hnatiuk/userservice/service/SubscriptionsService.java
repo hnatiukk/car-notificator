@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.hnatiuk.userservice.model.entity.Person;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SubscriptionsService {
     private final SubscriptionsRepository repository;
     private final PeopleService peopleService;
@@ -38,6 +40,7 @@ public class SubscriptionsService {
         owner.getSubscriptions().add(subscription);
 
         repository.save(subscription);
+        log.info("Successfully added new subscription for {}", principal.getName());
     }
 
     public Optional<Subscription> findById(Long id) {
@@ -58,19 +61,23 @@ public class SubscriptionsService {
                 subscription.getFuelType(),
                 jsonLoaderService.getBrands().get(subscription.getBrand()),
                 jsonLoaderService.getModels().get(subscription.getModel()));
+        log.info("Successfully updated subscription with id {}", subscription.getId());
     }
 
     public void disable(Subscription subscription) {
         subscription.setIsActive(false);
         repository.save(subscription);
+        log.info("Successfully disabled subscription with id {}", subscription.getId());
     }
 
     public void activate(Subscription subscription) {
         subscription.setIsActive(true);
         repository.save(subscription);
+        log.info("Successfully activated subscription with id {}", subscription.getId());
     }
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+        log.info("Successfully deleted subscription with id {}", id);
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.TreeMap;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JsonLoaderService {
 
     private final ResourceLoader resourceLoader;
@@ -32,7 +34,9 @@ public class JsonLoaderService {
     public void init() {
         try {
             loadBrands();
+            log.debug("Loaded {} brands", brands.size());
             loadModels();
+            log.debug("Loaded {} models", models.size());
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }

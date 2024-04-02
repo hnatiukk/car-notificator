@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.repository.PeopleRepository;
 import ua.hnatiuk.userservice.security.PersonDetails;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class PersonDetailsService implements UserDetailsService {
 
     private final PeopleRepository repository;
@@ -23,7 +25,11 @@ public class PersonDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Person person = repository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("Користувача з поштою %s не знайдено", email)));
+                {
+                    log.error("Could not find user with email {}", email);
+                    return new UsernameNotFoundException(String.format("Користувача з поштою %s не знайдено", email));
+                }
+        );
         return new PersonDetails(person);
     }
 }
