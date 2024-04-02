@@ -2,6 +2,7 @@ package ua.hnatiuk.userservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/subscriptions")
 @RequiredArgsConstructor
+@Slf4j
 public class SubscriptionsController {
     private final SubscriptionsService service;
     private final PeopleService peopleService;
@@ -30,9 +32,12 @@ public class SubscriptionsController {
 
     @GetMapping
     public String home(Principal principal, Model model) {
+        log.debug("Returning home page");
+
         Person person = peopleService.findByEmail(principal.getName()).get();
 
         if (person.getTgChatId() == null) {
+            log.debug("Redirecting to account settings due to missing telegram id");
             return "redirect:/account?no_tg";
         }
 
@@ -56,6 +61,8 @@ public class SubscriptionsController {
     @GetMapping("/add")
     public String getAddSubscriptionPage(@ModelAttribute("subscription") Subscription subscription,
                                          Model model) {
+        log.debug("Returning add subscription page");
+
         model.addAttribute("brands", service.getBrands());
         model.addAttribute("models", service.getModels());
         return "home/add-subscription";
@@ -66,18 +73,24 @@ public class SubscriptionsController {
                                   BindingResult bindingResult,
                                   Principal principal) {
         validator.validate(subscription, bindingResult);
+
         if (bindingResult.hasErrors()) {
+            log.warn("Could not validate subscription to add");
             return "home/add-subscription";
         }
+
         service.addSubscription(subscription, principal);
         return "redirect:/subscriptions";
     }
 
     @GetMapping("/{id}/edit")
     public String getEditPage(@PathVariable("id") Long id, Model model, Principal principal) {
+        log.debug("Returning edit page");
+
         Optional<Subscription> subscriptionOptional = service.findById(id);
         if (subscriptionOptional.isEmpty() ||
                 !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            log.warn("Rejected editing non existing subscription or from third user");
             return "redirect:/error";
         }
         model.addAttribute("subscription", subscriptionOptional.get());
@@ -91,7 +104,9 @@ public class SubscriptionsController {
     public String editSubscription(@ModelAttribute("subscription") @Valid Subscription subscription,
                                    BindingResult bindingResult) {
         validator.validate(subscription, bindingResult);
+
         if (bindingResult.hasErrors()) {
+            log.warn("Could not validate subscription to edit");
             return "home/edit-subscription";
         }
 
@@ -105,6 +120,7 @@ public class SubscriptionsController {
 
         if (subscriptionOptional.isEmpty() ||
                 !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            log.warn("Rejected disabling non existing subscription or from third user");
             return "redirect:/error";
         }
 
@@ -118,6 +134,7 @@ public class SubscriptionsController {
 
         if (subscriptionOptional.isEmpty() ||
                 !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            log.warn("Rejected activating non existing subscription or from third user");
             return "redirect:/error";
         }
 
@@ -126,7 +143,15 @@ public class SubscriptionsController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteSubscription(@PathVariable("id") Long id) {
+    public String deleteSubscription(@PathVariable("id") Long id, Principal principal) {
+        Optional<Subscription> subscriptionOptional = service.findById(id);
+
+        if (subscriptionOptional.isEmpty() ||
+                !subscriptionOptional.get().getOwner().getEmail().equals(principal.getName())) {
+            log.warn("Rejected deleting non existing subscription or from third user");
+            return "redirect:/error";
+        }
+
         service.deleteById(id);
 
         return "redirect:/subscriptions";
