@@ -20,29 +20,6 @@ import java.util.regex.Pattern;
 @Slf4j
 public class PeopleService {
     private final PeopleRepository repository;
-    public String tryAssignChatId(String userMessageText, Long chatId) {
-        String response;
-
-        if (userMessageText.startsWith("/link")) {
-            String[] split = userMessageText.split(" ");
-            if (split.length != 2) {
-                response = "Введіть у форматі:\n\n/link \"email адреса, на яку реєструвались\"";
-            } else {
-                try {
-                    String email = split[1];
-                    if (Pattern.matches("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", email)) {
-                        assignChatId(email, chatId);
-                        response = "Ви успішно прив`язали телеграм.";
-                    } else response = "Це не email.";
-                } catch (EmailNotFoundException e) {
-                    log.warn("This email is not registered");
-                    response = "Такий email не зареєстровано.";
-                }
-            }
-        } else
-            response = "Щоб з`єднати ваш телеграм з CarNotificator, відправте:\n\n/link \"email адреса, на яку реєструвались\"";
-        return response;
-    }
     @Transactional
     public void assignChatId(String email, Long chatId){
         Optional<Person> personOptional = repository.findByEmail(email);
