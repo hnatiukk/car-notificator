@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ua.hnatiuk.observerservice.feign.AutoRiaClient;
@@ -26,6 +27,7 @@ import static java.lang.StringTemplate.STR;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AutoRiaObserverService {
     private final SubscriptionsService subscriptionsService;
     private final AutoRiaClient autoRiaClient;
@@ -33,6 +35,7 @@ public class AutoRiaObserverService {
 
     @Scheduled(fixedRate = 60 * 60 * 1000)
     private void checkAll() {
+        log.debug("Scheduled task started");
         List<Subscription> subscriptions = subscriptionsService.getActiveSubscriptions();
 
         subscriptions.forEach(this::checkSubscription);
@@ -41,7 +44,12 @@ public class AutoRiaObserverService {
     private void checkSubscription(Subscription subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
-        if (newCarIds.isEmpty()) return;
+        if (newCarIds.isEmpty())  {
+            log.debug("Could not find any new car for subscription with id {}", subscription.getId());
+            return;
+        }
+
+        log.debug("Found {} new cars for subscription with id {}", newCarIds.size(), subscription.getId());
 
         List<CarDTO> newCarDTOs = getNewCarDTOs(newCarIds);
 
@@ -57,6 +65,7 @@ public class AutoRiaObserverService {
     private List<Integer> getNewCarIds(Subscription subscription) {
         AutoRiaRequestParams params = AutoRiaRequestParams.subscriptionToParams(subscription);
         String response = autoRiaClient.search(params, 3);
+        log.debug("Sent request for subscription with id {}", subscription.getId());
 
         JsonObject responseObject = new Gson().fromJson(response, JsonObject.class);
 
@@ -79,6 +88,7 @@ public class AutoRiaObserverService {
 
             MessageDTO messageDTO = new MessageDTO(tgChatId, text, carDTO.getPhotoData().getPhotoLink());
             notificationServiceClient.sendNotification(messageDTO);
+            log.debug("Sent notification to chat id {}", tgChatId);
         }
     }
 

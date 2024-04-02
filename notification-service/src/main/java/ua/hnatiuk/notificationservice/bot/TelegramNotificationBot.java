@@ -10,10 +10,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ua.hnatiuk.notificationservice.exception.EmailNotFoundException;
 import ua.hnatiuk.notificationservice.service.PeopleService;
 
-import java.util.regex.Pattern;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.
