@@ -2,9 +2,7 @@ package ua.hnatiuk.userservice.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ua.hnatiuk.userservice.model.enums.FuelType;
 import ua.hnatiuk.userservice.model.enums.TransmissionType;
 
@@ -12,10 +10,12 @@ import ua.hnatiuk.userservice.model.enums.TransmissionType;
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
 @Entity
-@Table(name = "subscription")
+@Table(name = "subscription", schema = "public")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

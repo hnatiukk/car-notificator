@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,10 +12,12 @@ import java.util.List;
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
 @Entity
-@Table(name = "person")
+@Table(name = "person", schema = "public")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
