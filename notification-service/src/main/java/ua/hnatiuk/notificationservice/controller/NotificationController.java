@@ -10,13 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
+import ua.hnatiuk.dto.MessageDTO;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.
  */
 @RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "NotificationController", description = "Controller for interactions with notification service")

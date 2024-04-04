@@ -6,14 +6,17 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ua.hnatiuk.userservice.model.entity.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.hnatiuk.userservice.model.enums.FuelType;
-import ua.hnatiuk.userservice.model.enums.TransmissionType;
+import ua.hnatiuk.enums.FuelType;
+import ua.hnatiuk.enums.TransmissionType;
+
+import java.util.List;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.
  */
 @Repository
 public interface SubscriptionsRepository extends JpaRepository<Subscription, Long> {
+    List<Subscription> findAllByIsActiveTrue();
     @Modifying
     @Query("UPDATE Subscription s SET s.brand = :brand, s.model = :model, s.priceStart = :priceStart, s.priceEnd = :priceEnd, s.yearStart = :yearStart, s.yearEnd = :yearEnd, s.mileageStart = :mileageStart, s.mileageEnd = :mileageEnd, s.transmissionType = :transmissionType, s.fuelType = :fuelType, s.brandId = :brandId, s.modelId = :modelId WHERE s.id = :id")
     void updateSubscription(@Param("id") Long id,
