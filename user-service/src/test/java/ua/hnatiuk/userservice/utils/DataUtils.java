@@ -2,8 +2,8 @@ package ua.hnatiuk.userservice.utils;
 
 import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.model.entity.Subscription;
-import ua.hnatiuk.userservice.model.enums.FuelType;
-import ua.hnatiuk.userservice.model.enums.TransmissionType;
+import ua.hnatiuk.enums.FuelType;
+import ua.hnatiuk.enums.TransmissionType;
 
 /**
  * @author Hnatiuk Volodymyr on 03.04.2024.

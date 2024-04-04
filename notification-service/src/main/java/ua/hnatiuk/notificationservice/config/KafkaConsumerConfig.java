@@ -11,7 +11,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
-import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
+import ua.hnatiuk.dto.MessageDTO;
 
 import java.util.HashMap;
 import java.util.Map;

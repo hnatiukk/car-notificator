@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.hnatiuk.observerservice.feign.params.AutoRiaRequestParams;
-import ua.hnatiuk.observerservice.model.dto.CarDTO;
+import ua.hnatiuk.dto.CarDTO;
 
 /**
  * @author Hnatiuk Volodymyr on 26.03.2024.

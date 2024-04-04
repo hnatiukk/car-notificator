@@ -93,7 +93,7 @@
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="transmission-type-choice" th:field="*{transmissionType}">
                     <option label="Будь-яка" value=""></option>
-                    <option th:each="transmissionType : ${T(ua.hnatiuk.userservice.model.enums.TransmissionType).values()}"
+                    <option th:each="transmissionType : ${T(ua.hnatiuk.enums.TransmissionType).values()}"
                             th:value="${transmissionType}"
                             th:text="${transmissionType.getName()}"></option>
                 </select>
@@ -105,7 +105,7 @@
                 <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="fuel-type-choice" th:field="*{fuelType}">
                     <option label="Будь-який" value=""></option>
-                    <option th:each="fuelType : ${T(ua.hnatiuk.userservice.model.enums.FuelType).values()}"
+                    <option th:each="fuelType : ${T(ua.hnatiuk.enums.FuelType).values()}"
                             th:value="${fuelType}"
                             th:text="${fuelType.getName()}"></option>
                 </select>

@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import ua.hnatiuk.dto.MessageDTO;
+import ua.hnatiuk.dto.SubscriptionDTO;
 import ua.hnatiuk.observerservice.feign.AutoRiaClient;
 import ua.hnatiuk.observerservice.feign.NotificationServiceClient;
 import ua.hnatiuk.observerservice.feign.params.AutoRiaRequestParams;
-import ua.hnatiuk.observerservice.model.dto.CarDTO;
-import ua.hnatiuk.observerservice.model.dto.MessageDTO;
-import ua.hnatiuk.observerservice.model.entity.Subscription;
+import ua.hnatiuk.dto.CarDTO;
 
 
 import java.util.Collections;
@@ -36,20 +36,20 @@ public class AutoRiaObserverService {
     @Scheduled(fixedRate = 60 * 60 * 1000)
     private void checkAll() {
         log.debug("Scheduled task started");
-        List<Subscription> subscriptions = subscriptionsService.getActiveSubscriptions();
+        List<SubscriptionDTO> subscriptions = subscriptionsService.getActiveSubscriptions();
 
         subscriptions.forEach(this::checkSubscription);
     }
 
-    private void checkSubscription(Subscription subscription) {
+    private void checkSubscription(SubscriptionDTO subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
         if (newCarIds.isEmpty())  {
-            log.debug("Could not find any new car for subscription with id {}", subscription.getId());
+            log.debug("Could not find any new car for subscription");
             return;
         }
 
-        log.debug("Found {} new cars for subscription with id {}", newCarIds.size(), subscription.getId());
+        log.debug("Found {} new cars for subscription", newCarIds.size());
 
         List<CarDTO> newCarDTOs = getNewCarDTOs(newCarIds);
 
@@ -62,10 +62,10 @@ public class AutoRiaObserverService {
                 .toList();
     }
 
-    private List<Integer> getNewCarIds(Subscription subscription) {
+    private List<Integer> getNewCarIds(SubscriptionDTO subscription) {
         AutoRiaRequestParams params = AutoRiaRequestParams.subscriptionToParams(subscription);
         String response = autoRiaClient.search(params, 3);
-        log.debug("Sent request for subscription with id {}", subscription.getId());
+        log.debug("Sent request for subscription");
 
         JsonObject responseObject = new Gson().fromJson(response, JsonObject.class);
 

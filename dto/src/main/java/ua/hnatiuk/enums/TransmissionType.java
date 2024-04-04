@@ -1,4 +1,4 @@
-package ua.hnatiuk.observerservice.model.enums;
+package ua.hnatiuk.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

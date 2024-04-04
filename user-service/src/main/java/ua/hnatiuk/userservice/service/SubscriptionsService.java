@@ -9,6 +9,7 @@ import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ public class SubscriptionsService {
     public Set<String> getModels() {
         return jsonLoaderService.getModels().keySet();
     }
+
     @Transactional
     public void addSubscription(Subscription subscription, Principal principal) {
         subscription.setIsActive(true);
@@ -43,9 +45,11 @@ public class SubscriptionsService {
         log.info("Successfully added new subscription for {}", principal.getName());
     }
 
+    @Transactional(readOnly = true)
     public Optional<Subscription> findById(Long id) {
         return repository.findById(id);
     }
+
     @Transactional
     public void update(Subscription subscription) {
         repository.updateSubscription(subscription.getId(),
@@ -64,20 +68,28 @@ public class SubscriptionsService {
         log.info("Successfully updated subscription with id {}", subscription.getId());
     }
 
+    @Transactional
     public void disable(Subscription subscription) {
         subscription.setIsActive(false);
         repository.save(subscription);
         log.info("Successfully disabled subscription with id {}", subscription.getId());
     }
 
+    @Transactional
     public void activate(Subscription subscription) {
         subscription.setIsActive(true);
         repository.save(subscription);
         log.info("Successfully activated subscription with id {}", subscription.getId());
     }
 
+    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
         log.info("Successfully deleted subscription with id {}", id);
+    }
+
+    public List<Subscription> findAll(Boolean onlyActive) {
+        if (onlyActive) return repository.findAllByIsActiveTrue();
+        return repository.findAll();
     }
 }

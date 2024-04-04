@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ua.hnatiuk.notificationservice.exception.EmailNotFoundException;
-import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
+import ua.hnatiuk.dto.MessageDTO;
 import ua.hnatiuk.notificationservice.service.PeopleService;
 import org.telegram.telegrambots.meta.generics.BotSession;
 

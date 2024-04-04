@@ -1,4 +1,4 @@
-package ua.hnatiuk.observerservice.model.dto;
+package ua.hnatiuk.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

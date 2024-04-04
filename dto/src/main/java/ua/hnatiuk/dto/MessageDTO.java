@@ -1,4 +1,4 @@
-package ua.hnatiuk.observerservice.model.dto;
+package ua.hnatiuk.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

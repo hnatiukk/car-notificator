@@ -1,4 +1,4 @@
-package ua.hnatiuk.userservice.model.dto;
+package ua.hnatiuk.dto;
 
 import lombok.*;
 

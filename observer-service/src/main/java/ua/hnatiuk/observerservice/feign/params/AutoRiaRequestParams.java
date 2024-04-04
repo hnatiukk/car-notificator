@@ -3,7 +3,7 @@ package ua.hnatiuk.observerservice.feign.params;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ua.hnatiuk.observerservice.model.entity.Subscription;
+import ua.hnatiuk.dto.SubscriptionDTO;
 
 /**
  * @author Hnatiuk Volodymyr on 27.03.2024.
@@ -24,7 +24,7 @@ public class AutoRiaRequestParams {
     private Integer gearbox;
     private Integer type;
 
-    public static AutoRiaRequestParams subscriptionToParams(Subscription subscription) {
+    public static AutoRiaRequestParams subscriptionToParams(SubscriptionDTO subscription) {
         AutoRiaRequestParams.AutoRiaRequestParamsBuilder builder = AutoRiaRequestParams.builder()
                 .category_id(1)
                 .marka_id(subscription.getBrandId())

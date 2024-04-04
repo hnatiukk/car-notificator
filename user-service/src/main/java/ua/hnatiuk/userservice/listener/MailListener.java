@@ -5,7 +5,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import ua.hnatiuk.userservice.model.dto.MailDTO;
+import ua.hnatiuk.dto.MailDTO;
 
 
 /**

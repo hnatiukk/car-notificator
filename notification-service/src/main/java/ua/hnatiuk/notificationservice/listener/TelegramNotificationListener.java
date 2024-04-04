@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ua.hnatiuk.notificationservice.bot.TelegramNotificationBot;
-import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
+import ua.hnatiuk.dto.MessageDTO;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.

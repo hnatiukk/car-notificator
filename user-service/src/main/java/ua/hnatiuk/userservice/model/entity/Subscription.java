@@ -3,8 +3,8 @@ package ua.hnatiuk.userservice.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import ua.hnatiuk.userservice.model.enums.FuelType;
-import ua.hnatiuk.userservice.model.enums.TransmissionType;
+import ua.hnatiuk.enums.FuelType;
+import ua.hnatiuk.enums.TransmissionType;
 
 /**
  * @author Hnatiuk Volodymyr on 21.03.2024.

@@ -1,6 +1,6 @@
 package ua.hnatiuk.notificationservice.listener;
 
-import ua.hnatiuk.notificationservice.model.dto.MessageDTO;
+import ua.hnatiuk.dto.MessageDTO;
 
 /**
  * @author Hnatiuk Volodymyr on 25.03.2024.
