@@ -1,14 +1,17 @@
 package ua.hnatiuk.userservice.repository;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.utils.DataUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,11 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class SubscriptionsRepositoryTest {
     @Autowired
-    private SubscriptionsRepository subscriptionRepository;
+    private SubscriptionsRepository subscriptionsRepository;
+    @Autowired
+    private PeopleRepository peopleRepository;
 
-    @BeforeEach
+    @AfterEach
     public void clearData() {
-        subscriptionRepository.deleteAll();
+        subscriptionsRepository.deleteAll();
+        peopleRepository.deleteAll();
     }
 
     @Test
@@ -33,7 +39,7 @@ public class SubscriptionsRepositoryTest {
         Subscription subscription = DataUtils.getSubscriptionTransient();
 
         // when
-        Subscription savedSubscription = subscriptionRepository.save(subscription);
+        Subscription savedSubscription = subscriptionsRepository.save(subscription);
 
         // then
         assertThat(savedSubscription).isNotNull();
@@ -46,13 +52,13 @@ public class SubscriptionsRepositoryTest {
         // given
         Integer updatedPriceStart = 5000;
         Subscription subscriptionToCreate = DataUtils.getSubscriptionTransient();
-        subscriptionRepository.save(subscriptionToCreate);
+        subscriptionsRepository.save(subscriptionToCreate);
 
         // when
-        Subscription subscriptionToUpdate = subscriptionRepository.findById(subscriptionToCreate.getId())
+        Subscription subscriptionToUpdate = subscriptionsRepository.findById(subscriptionToCreate.getId())
                 .orElse(null);
         subscriptionToUpdate.setPriceStart(updatedPriceStart);
-        Subscription updatedSubscription = subscriptionRepository.save(subscriptionToUpdate);
+        Subscription updatedSubscription = subscriptionsRepository.save(subscriptionToUpdate);
 
         // then
         assertThat(updatedSubscription).isNotNull();
@@ -64,10 +70,10 @@ public class SubscriptionsRepositoryTest {
     public void givenSubscriptionId_whenFindById_thenReturnSubscription() {
         // given
         Subscription subscription = DataUtils.getSubscriptionTransient();
-        subscriptionRepository.save(subscription);
+        subscriptionsRepository.save(subscription);
 
         // when
-        Subscription obtainedSubscription = subscriptionRepository.findById(subscription.getId()).orElse(null);
+        Subscription obtainedSubscription = subscriptionsRepository.findById(subscription.getId()).orElse(null);
 
         // then
         assertThat(obtainedSubscription).isNotNull();
@@ -80,10 +86,33 @@ public class SubscriptionsRepositoryTest {
         // given
 
         // when
-        Subscription obtainedSubscription = subscriptionRepository.findById(1L).orElse(null);
+        Subscription obtainedSubscription = subscriptionsRepository.findById(1L).orElse(null);
 
         // then
         assertThat(obtainedSubscription).isNull();
+    }
+
+    @Test
+    @DisplayName("Test find all subscriptions functionality")
+    public void givenSubscriptions_whenSaveAll_thenReturnAllSubscriptions() {
+        // given
+        Person owner = DataUtils.getPersonPersisted();
+        peopleRepository.save(owner);
+
+        Subscription subscription1 = DataUtils.getSubscriptionTransient();
+        Subscription subscription2 = DataUtils.getSubscriptionTransient();
+        Subscription subscription3 = DataUtils.getSubscriptionTransient();
+
+        List<Subscription> subscriptionList = List.of(subscription1, subscription2, subscription3);
+        subscriptionList.forEach(s -> s.setOwner(owner));
+
+        subscriptionsRepository.saveAll(subscriptionList);
+
+        // when
+        List<Subscription> obtainedList = subscriptionsRepository.findAll();
+
+        // then
+        assertThat(obtainedList).isNotEmpty();
     }
 
     @Test
@@ -91,13 +120,13 @@ public class SubscriptionsRepositoryTest {
     public void givenSubscriptionIsSaved_whenDeleteById_thenSubscriptionRemovedFromDB() {
         // given
         Subscription subscription = DataUtils.getSubscriptionTransient();
-        subscriptionRepository.save(subscription);
+        subscriptionsRepository.save(subscription);
 
         // when
-        subscriptionRepository.deleteById(subscription.getId());
+        subscriptionsRepository.deleteById(subscription.getId());
 
         // then
-        Subscription obtainedSubscription = subscriptionRepository.findById(subscription.getId()).orElse(null);
+        Subscription obtainedSubscription = subscriptionsRepository.findById(subscription.getId()).orElse(null);
         assertThat(obtainedSubscription).isNull();
     }
 }

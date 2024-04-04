@@ -18,6 +18,16 @@ public class DataUtils {
                 .build();
     }
 
+    public static Person getPersonPersisted() {
+        return Person.builder()
+                .id(1L)
+                .email("test@gmail.com")
+                .password("password")
+                .role("ROLE_USER")
+                .tgChatId(4392041L)
+                .build();
+    }
+
     public static Subscription getSubscriptionTransient() {
         return Subscription.builder()
                 .brand("BMW")
@@ -33,7 +43,6 @@ public class DataUtils {
                 .isActive(true)
                 .brandId(9)
                 .modelId(96)
-                .owner(getPersonTransient())
                 .build();
     }
 }
