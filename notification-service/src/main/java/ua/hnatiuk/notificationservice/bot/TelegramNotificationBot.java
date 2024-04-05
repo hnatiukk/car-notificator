@@ -30,6 +30,13 @@ import java.util.regex.Pattern;
 public class TelegramNotificationBot extends TelegramLongPollingBot {
     private final PeopleService peopleService;
     private BotSession botSession;
+    private static final String LINK_FORMAT_MESSAGE = "Введіть у форматі:\n\n/link \"email адреса, на яку реєструвались\"";
+    private static final String SUCCESS_MESSAGE = "Ви успішно прив'язали телеграм.";
+    private static final String INVALID_EMAIL_MESSAGE = "Це не email.";
+    private static final String EMAIL_NOT_FOUND_MESSAGE = "Такий email не зареєстровано.";
+    private static final String INSTRUCTION_MESSAGE = "Щоб з'єднати ваш телеграм з CarNotificator, відправте:\n\n/link \"email адреса, на яку реєструвались\"";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$");
+
 
     @Autowired
     public TelegramNotificationBot(@Value("${telegram.apikey}") String botToken,
@@ -60,27 +67,27 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
     }
-    private String tryAssignChatId(String userMessageText, Long chatId) {
+    public String tryAssignChatId(String userMessageText, Long chatId) {
         String response;
 
         if (userMessageText.startsWith("/link")) {
             String[] split = userMessageText.split(" ");
             if (split.length != 2) {
-                response = "Введіть у форматі:\n\n/link \"email адреса, на яку реєструвались\"";
+                response = LINK_FORMAT_MESSAGE;
             } else {
                 try {
                     String email = split[1];
-                    if (Pattern.matches("^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})$", email)) {
+                    if (EMAIL_PATTERN.matcher(email).matches()) {
                         peopleService.assignChatId(email, chatId);
-                        response = "Ви успішно прив'язали телеграм.";
-                    } else response = "Це не email.";
+                        response = SUCCESS_MESSAGE;
+                    } else response = INVALID_EMAIL_MESSAGE;
                 } catch (EmailNotFoundException e) {
                     log.warn("This email is not registered");
-                    response = "Такий email не зареєстровано.";
+                    response = EMAIL_NOT_FOUND_MESSAGE;
                 }
             }
         } else
-            response = "Щоб з'єднати ваш телеграм з CarNotificator, відправте:\n\n/link \"email адреса, на яку реєструвались\"";
+            response = INSTRUCTION_MESSAGE;
         return response;
     }
 
