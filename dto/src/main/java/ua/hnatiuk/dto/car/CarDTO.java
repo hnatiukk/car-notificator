@@ -1,4 +1,4 @@
-package ua.hnatiuk.dto;
+package ua.hnatiuk.dto.car;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
