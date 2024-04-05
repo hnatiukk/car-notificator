@@ -89,7 +89,9 @@ public class SubscriptionsService {
     }
 
     public List<Subscription> findAll(Boolean onlyActive) {
-        if (onlyActive) return repository.findAllByIsActiveTrue();
+        if (onlyActive) {
+            return repository.findAllByIsActiveTrue();
+        }
         return repository.findAll();
     }
 }

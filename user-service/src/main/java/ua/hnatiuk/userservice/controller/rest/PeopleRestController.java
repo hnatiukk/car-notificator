@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.controller.rest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import ua.hnatiuk.userservice.service.PeopleService;
 @RestController
 @RequestMapping("/api/v1/people")
 @RequiredArgsConstructor
+@Slf4j
 public class PeopleRestController {
     private final PeopleService peopleService;
     @Value("${carnotificator.inner-api-key}")
@@ -25,6 +27,7 @@ public class PeopleRestController {
             @RequestBody PersonDTO personDTO
             ) {
         if (!innerKey.equals(innerApiKey)) {
+            log.warn("Accepted request with invalid inner key");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

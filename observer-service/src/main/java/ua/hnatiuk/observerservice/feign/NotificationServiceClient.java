@@ -11,6 +11,6 @@ import ua.hnatiuk.dto.MessageDTO;
  */
 @FeignClient(name = "${feign.notification-service.name}", url = "${feign.notification-service.url}")
 public interface NotificationServiceClient {
-    @RequestMapping(method = RequestMethod.POST, value = "api/v1/send")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/send")
     void sendNotification(@RequestBody MessageDTO messageDTO);
 }

@@ -13,7 +13,7 @@ import ua.hnatiuk.dto.SubscriptionDTO;
 import ua.hnatiuk.observerservice.feign.AutoRiaClient;
 import ua.hnatiuk.observerservice.feign.NotificationServiceClient;
 import ua.hnatiuk.observerservice.feign.params.AutoRiaRequestParams;
-import ua.hnatiuk.dto.CarDTO;
+import ua.hnatiuk.dto.car.CarDTO;
 
 
 import java.util.Collections;

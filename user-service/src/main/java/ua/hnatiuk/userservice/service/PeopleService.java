@@ -36,7 +36,7 @@ public class PeopleService {
         return repository.findByEmail(email);
     }
     public Person findByEmailAndInitSubscriptions(String email) {
-        Person person = repository.findByEmail(email).get();
+        Person person = findByEmail(email).get();
 
         initSubscriptions(person);
 
@@ -52,10 +52,12 @@ public class PeopleService {
         Optional<Person> personOptional = findByEmail(email);
 
         if (personOptional.isEmpty()) {
+            log.debug("Could not find email {}", email);
             throw new EmailNotFoundException();
         }
 
         Person person = personOptional.get();
         person.setTgChatId(chatId);
+        log.info("Successfully assigned {} chat id to {}", chatId, email);
     }
 }

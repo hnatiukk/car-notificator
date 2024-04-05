@@ -1,6 +1,7 @@
 package ua.hnatiuk.userservice.controller.rest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/subscriptions")
 @RequiredArgsConstructor
+@Slf4j
 public class SubscriptionsRestController {
     private final SubscriptionsService subscriptionsService;
     private final SubscriptionMapper mapper;
@@ -31,6 +33,7 @@ public class SubscriptionsRestController {
             @RequestParam(name = "active", required = false, defaultValue = "false") Boolean onlyActive
     ) {
         if (!innerKey.equals(innerApiKey)) {
+            log.warn("Accepted request with invalid inner key");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         List<SubscriptionDTO> subscriptionDTOList
@@ -38,6 +41,7 @@ public class SubscriptionsRestController {
                 .map(mapper::subscriptionToDTO)
                 .toList();
 
+        log.debug("Responsing with all active subscriptions");
         return ResponseEntity.ok(subscriptionDTOList);
     }
 }
