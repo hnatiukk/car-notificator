@@ -34,7 +34,7 @@ public class PeopleRestController {
         try {
             peopleService.assignChatId(personDTO.getEmail(), personDTO.getTgChatId());
         } catch (EmailNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok().build();
     }

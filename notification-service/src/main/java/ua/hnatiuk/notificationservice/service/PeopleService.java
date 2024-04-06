@@ -17,9 +17,10 @@ import ua.hnatiuk.notificationservice.feign.UserServiceClient;
 @Slf4j
 public class PeopleService {
     private final UserServiceClient userServiceClient;
+
     public void assignChatId(String email, Long chatId){
         try (Response response = userServiceClient.assignTgChatId(new PersonDTO(email, chatId))){
-            if (response.status() == 403) {
+            if (response.status() == 400) {
                 throw new EmailNotFoundException();
             }
         }
