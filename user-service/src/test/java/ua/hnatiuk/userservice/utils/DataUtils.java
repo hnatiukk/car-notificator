@@ -5,6 +5,8 @@ import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.enums.FuelType;
 import ua.hnatiuk.enums.TransmissionType;
 
+import java.util.LinkedList;
+
 /**
  * @author Hnatiuk Volodymyr on 03.04.2024.
  */
@@ -25,6 +27,7 @@ public class DataUtils {
                 .password("password")
                 .role("ROLE_USER")
                 .tgChatId(4392041L)
+                .subscriptions(new LinkedList<>())
                 .build();
     }
 
@@ -43,6 +46,26 @@ public class DataUtils {
                 .isActive(true)
                 .brandId(9)
                 .modelId(96)
+                .build();
+    }
+
+    public static Subscription getSubscriptionPersisted() {
+        return Subscription.builder()
+                .id(1L)
+                .brand("BMW")
+                .model("X5")
+                .priceStart(10_000)
+                .priceEnd(30_000)
+                .yearStart(2010)
+                .yearEnd(2020)
+                .mileageStart(1)
+                .mileageEnd(200)
+                .transmissionType(TransmissionType.AUTOMATIC)
+                .fuelType(FuelType.GASOLINE)
+                .isActive(true)
+                .brandId(9)
+                .modelId(96)
+                .owner(getPersonPersisted())
                 .build();
     }
 }

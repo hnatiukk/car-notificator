@@ -48,7 +48,7 @@ public class SubscriptionsRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         List<SubscriptionDTO> subscriptionDTOList
-                = subscriptionsService.findAll(onlyActive).stream()
+                = subscriptionsService.findAllByIsActive(onlyActive).stream()
                 .map(mapper::subscriptionToDTO)
                 .toList();
 

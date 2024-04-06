@@ -8,7 +8,6 @@ import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.repository.SubscriptionsRepository;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,16 +32,16 @@ public class SubscriptionsService {
     }
 
     @Transactional
-    public void addSubscription(Subscription subscription, Principal principal) {
+    public Subscription addSubscription(Subscription subscription, String email) {
         subscription.setIsActive(true);
         subscription.setBrandId(jsonLoaderService.getBrands().get(subscription.getBrand()));
         subscription.setModelId(jsonLoaderService.getModels().get(subscription.getModel()));
-        Person owner = peopleService.findByEmailAndInitSubscriptions(principal.getName());
+        Person owner = peopleService.findByEmailAndInitSubscriptions(email);
         subscription.setOwner(owner);
         owner.getSubscriptions().add(subscription);
 
-        repository.save(subscription);
-        log.info("Successfully added new subscription for {}", principal.getName());
+        log.info("Successfully added new subscription for {}", email);
+        return repository.save(subscription);
     }
 
     @Transactional(readOnly = true)
@@ -89,7 +88,7 @@ public class SubscriptionsService {
     }
 
     @Transactional(readOnly = true)
-    public List<Subscription> findAll(Boolean onlyActive) {
+    public List<Subscription> findAllByIsActive(Boolean onlyActive) {
         return repository.findAllByIsActive(onlyActive);
     }
 }

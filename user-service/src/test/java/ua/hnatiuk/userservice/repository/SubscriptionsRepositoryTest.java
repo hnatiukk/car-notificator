@@ -104,7 +104,10 @@ public class SubscriptionsRepositoryTest {
         Subscription subscription3 = DataUtils.getSubscriptionTransient();
 
         List<Subscription> subscriptionList = List.of(subscription1, subscription2, subscription3);
-        subscriptionList.forEach(s -> s.setOwner(owner));
+        subscriptionList.forEach(s -> {
+            s.setOwner(owner);
+            owner.getSubscriptions().add(s);
+        });
 
         subscriptionsRepository.saveAll(subscriptionList);
 
@@ -113,6 +116,33 @@ public class SubscriptionsRepositoryTest {
 
         // then
         assertThat(obtainedList).isNotEmpty();
+        assertThat(obtainedList.size()).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("Test find all by active subscriptions functionality")
+    public void givenSubscriptions_whenSaveAll_thenReturnAllOnlyActiveSubscriptions() {
+        // given
+        Person owner = DataUtils.getPersonPersisted();
+        peopleRepository.save(owner);
+
+        Subscription subscription1 = DataUtils.getSubscriptionTransient();
+        Subscription subscription2 = DataUtils.getSubscriptionTransient();
+        Subscription subscription3 = DataUtils.getSubscriptionTransient();
+
+        subscription2.setIsActive(false);
+
+        List<Subscription> subscriptionList = List.of(subscription1, subscription2, subscription3);
+        subscriptionList.forEach(s -> s.setOwner(owner));
+
+        subscriptionsRepository.saveAll(subscriptionList);
+
+        // when
+        List<Subscription> obtainedList = subscriptionsRepository.findAllByIsActive(true);
+
+        // then
+        assertThat(obtainedList).isNotEmpty();
+        assertThat(obtainedList.size()).isEqualTo(2);
     }
 
     @Test

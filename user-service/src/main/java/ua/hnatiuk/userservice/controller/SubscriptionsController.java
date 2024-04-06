@@ -79,7 +79,7 @@ public class SubscriptionsController {
             return "home/add-subscription";
         }
 
-        service.addSubscription(subscription, principal);
+        service.addSubscription(subscription, principal.getName());
         return "redirect:/subscriptions";
     }
 
