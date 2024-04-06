@@ -23,7 +23,15 @@ public class SecurityConfig {
                 .csrf(csrf ->
                         csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers("/login", "/signup", "/confirm-email", "/api/**").permitAll()
+                        requests.requestMatchers(
+                                        "/login",
+                                        "/signup",
+                                        "/confirm-email",
+                                        "/api/**").permitAll()
+                                .requestMatchers(
+                                        "/swagger-ui.html",
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**").hasRole("DEVELOPER")
                                 .anyRequest().authenticated())
                 .formLogin(formLogin ->
                         formLogin

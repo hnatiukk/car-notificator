@@ -1,5 +1,9 @@
 package ua.hnatiuk.userservice.controller.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +21,18 @@ import ua.hnatiuk.userservice.service.PeopleService;
 @RequestMapping("/api/v1/people")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "PeopleRestController", description = "Controller for interactions with users")
 public class PeopleRestController {
     private final PeopleService peopleService;
     @Value("${carnotificator.inner-api-key}")
     private String innerApiKey;
     @PostMapping("/assign-tg-chat-id")
+    @Operation(summary = "Assign chat id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Chat id was successfully assigned"),
+            @ApiResponse(responseCode = "400", description = "Provided email is not registered"),
+            @ApiResponse(responseCode = "403", description = "Invalid inner api key")
+    })
     public ResponseEntity<Void> assignTgChatId(
             @RequestParam(name = "inner_key") String innerKey,
             @RequestBody PersonDTO personDTO

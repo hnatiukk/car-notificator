@@ -1,5 +1,10 @@
 package ua.hnatiuk.userservice.controller.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,12 +27,18 @@ import java.util.List;
 @RequestMapping("/api/v1/subscriptions")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "SubscriptionsRestController", description = "Controller for interactions with subscriptions")
 public class SubscriptionsRestController {
     private final SubscriptionsService subscriptionsService;
     private final SubscriptionMapper mapper;
     @Value("${carnotificator.inner-api-key}")
     private String innerApiKey;
     @GetMapping
+    @Operation(summary = "Get subscriptions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "403", description = "Invalid inner api key", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Returns subscriptions array")
+    })
     public ResponseEntity<List<SubscriptionDTO>> getSubscriptions(
             @RequestParam(name = "inner_key") String innerKey,
             @RequestParam(name = "active", required = false, defaultValue = "false") Boolean onlyActive
