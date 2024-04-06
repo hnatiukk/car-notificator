@@ -22,7 +22,6 @@ import java.util.TreeMap;
 @RequiredArgsConstructor
 @Slf4j
 public class JsonLoaderService {
-
     private final ResourceLoader resourceLoader;
     private final ObjectMapper objectMapper;
     @Getter

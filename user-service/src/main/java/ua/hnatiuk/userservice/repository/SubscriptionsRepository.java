@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository
 public interface SubscriptionsRepository extends JpaRepository<Subscription, Long> {
-    List<Subscription> findAllByIsActiveTrue();
+    List<Subscription> findAllByIsActive(Boolean isActive);
     @Modifying
     @Query("UPDATE Subscription s SET s.brand = :brand, s.model = :model, s.priceStart = :priceStart, s.priceEnd = :priceEnd, s.yearStart = :yearStart, s.yearEnd = :yearEnd, s.mileageStart = :mileageStart, s.mileageEnd = :mileageEnd, s.transmissionType = :transmissionType, s.fuelType = :fuelType, s.brandId = :brandId, s.modelId = :modelId WHERE s.id = :id")
     void updateSubscription(@Param("id") Long id,

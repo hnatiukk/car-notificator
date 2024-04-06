@@ -47,6 +47,7 @@ public class PeopleService {
         Hibernate.initialize(person.getSubscriptions());
         log.debug("Initialized subscriptions for {}", person.getEmail());
     }
+
     @Transactional
     public void assignChatId(String email, Long chatId) {
         Optional<Person> personOptional = findByEmail(email);

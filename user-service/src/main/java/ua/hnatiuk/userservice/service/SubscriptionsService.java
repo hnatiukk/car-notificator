@@ -88,10 +88,8 @@ public class SubscriptionsService {
         log.info("Successfully deleted subscription with id {}", id);
     }
 
+    @Transactional(readOnly = true)
     public List<Subscription> findAll(Boolean onlyActive) {
-        if (onlyActive) {
-            return repository.findAllByIsActiveTrue();
-        }
-        return repository.findAll();
+        return repository.findAllByIsActive(onlyActive);
     }
 }
