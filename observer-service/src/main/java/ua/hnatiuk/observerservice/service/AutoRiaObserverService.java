@@ -31,14 +31,16 @@ import static java.lang.StringTemplate.STR;
 public class AutoRiaObserverService {
     private final SubscriptionsService subscriptionsService;
     private final AutoRiaClient autoRiaClient;
-    private final NotificationServiceClient notificationServiceClient;
+    private final NotificationService notificationService;
 
     @Scheduled(fixedRate = 60 * 60 * 1000)
     private void checkAll() {
         log.debug("Scheduled task started");
         List<SubscriptionDTO> subscriptions = subscriptionsService.getActiveSubscriptions();
 
-        subscriptions.forEach(this::checkSubscription);
+        subscriptions.stream()
+                .filter(s -> s.getOwner().getTgChatId() != null)
+                .forEach(this::checkSubscription);
     }
 
     private void checkSubscription(SubscriptionDTO subscription) {
@@ -87,8 +89,7 @@ public class AutoRiaObserverService {
             String text = formMessage(carDTO);
 
             MessageDTO messageDTO = new MessageDTO(tgChatId, text, carDTO.getPhotoData().getPhotoLink());
-            notificationServiceClient.sendNotification(messageDTO);
-            log.debug("Sent notification to chat id {}", tgChatId);
+            notificationService.sendNotification(messageDTO);
         }
     }
 
