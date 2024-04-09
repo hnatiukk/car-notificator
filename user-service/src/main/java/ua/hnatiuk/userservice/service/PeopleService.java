@@ -49,7 +49,7 @@ public class PeopleService {
     }
 
     @Transactional
-    public void assignChatId(String email, Long chatId) {
+    public Person assignChatId(String email, Long chatId) {
         Optional<Person> personOptional = findByEmail(email);
 
         if (personOptional.isEmpty()) {
@@ -60,5 +60,6 @@ public class PeopleService {
         Person person = personOptional.get();
         person.setTgChatId(chatId);
         log.info("Successfully assigned {} chat id to {}", chatId, email);
+        return person;
     }
 }

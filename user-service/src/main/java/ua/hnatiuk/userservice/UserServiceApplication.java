@@ -16,6 +16,4 @@ public class UserServiceApplication {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
-
-
 }

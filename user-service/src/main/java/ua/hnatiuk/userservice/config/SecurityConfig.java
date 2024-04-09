@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .defaultSuccessUrl("/subscriptions", true)
                                 .failureUrl("/login?error"))
                 .logout(logout ->
-                        logout.logoutUrl("/logout"))    ;
+                        logout.logoutUrl("/logout"));
         return http.build();
     }
 

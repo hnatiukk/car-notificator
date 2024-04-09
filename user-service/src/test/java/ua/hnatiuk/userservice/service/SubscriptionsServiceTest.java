@@ -33,11 +33,6 @@ public class SubscriptionsServiceTest {
     @InjectMocks
     private SubscriptionsService serviceUnderTest;
 
-    // given
-
-    // when
-
-    // then
     @Test
     @DisplayName("Test find by id subscription functionality")
     public void givenSubscriptionId_whenFindById_thenReturnSubscription() {

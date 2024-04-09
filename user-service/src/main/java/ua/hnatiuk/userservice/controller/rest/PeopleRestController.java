@@ -37,6 +37,7 @@ public class PeopleRestController {
             @RequestParam(name = "inner_key") String innerKey,
             @RequestBody PersonDTO personDTO
             ) {
+
         if (!innerKey.equals(innerApiKey)) {
             log.warn("Accepted request with invalid inner key");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -45,7 +46,7 @@ public class PeopleRestController {
         try {
             peopleService.assignChatId(personDTO.getEmail(), personDTO.getTgChatId());
         } catch (EmailNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok().build();
     }

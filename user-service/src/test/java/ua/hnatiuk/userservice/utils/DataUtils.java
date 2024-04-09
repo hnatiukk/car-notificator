@@ -1,5 +1,7 @@
 package ua.hnatiuk.userservice.utils;
 
+import ua.hnatiuk.dto.PersonDTO;
+import ua.hnatiuk.dto.SubscriptionDTO;
 import ua.hnatiuk.userservice.model.entity.Person;
 import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.enums.FuelType;
@@ -66,6 +68,32 @@ public class DataUtils {
                 .brandId(9)
                 .modelId(96)
                 .owner(getPersonPersisted())
+                .build();
+    }
+
+    public static PersonDTO getPersonDTO() {
+        return PersonDTO.builder()
+                .email("test@gmail.com")
+                .tgChatId(4392041L)
+                .build();
+    }
+
+    public static SubscriptionDTO getSubscriptionDTO() {
+        return SubscriptionDTO.builder()
+                .brand("BMW")
+                .model("X5")
+                .priceStart(10_000)
+                .priceEnd(30_000)
+                .yearStart(2010)
+                .yearEnd(2020)
+                .mileageStart(1)
+                .mileageEnd(200)
+                .transmissionType(TransmissionType.AUTOMATIC)
+                .fuelType(FuelType.GASOLINE)
+                .isActive(true)
+                .brandId(9)
+                .modelId(96)
+                .owner(getPersonDTO())
                 .build();
     }
 }

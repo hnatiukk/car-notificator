@@ -20,7 +20,7 @@ public class PeopleService {
 
     public void assignChatId(String email, Long chatId){
         try (Response response = userServiceClient.assignTgChatId(new PersonDTO(email, chatId))){
-            if (response.status() == 400) {
+            if (response.status() == 404) {
                 throw new EmailNotFoundException();
             }
         }

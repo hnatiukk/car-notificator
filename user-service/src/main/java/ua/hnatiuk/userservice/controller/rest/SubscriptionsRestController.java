@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.hnatiuk.dto.SubscriptionDTO;
+import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.model.mapper.SubscriptionMapper;
 import ua.hnatiuk.userservice.service.SubscriptionsService;
 
@@ -51,8 +52,7 @@ public class SubscriptionsRestController {
                 = subscriptionsService.findAllByIsActive(onlyActive).stream()
                 .map(mapper::subscriptionToDTO)
                 .toList();
-
-        log.debug("Responsing with all active subscriptions");
+        log.debug("Responding with all active subscriptions");
         return ResponseEntity.ok(subscriptionDTOList);
     }
 }
