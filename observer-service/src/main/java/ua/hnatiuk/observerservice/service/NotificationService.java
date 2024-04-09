@@ -15,6 +15,10 @@ import ua.hnatiuk.observerservice.feign.NotificationServiceClient;
 public class NotificationService {
     private final NotificationServiceClient client;
 
+    /**
+     * Sends notification to user
+     * @param messageDTO MessageDTO
+     */
     public void sendNotification(MessageDTO messageDTO) {
         client.sendNotification(messageDTO);
         log.debug("Sent notification to chat id {}", messageDTO.getChatId());

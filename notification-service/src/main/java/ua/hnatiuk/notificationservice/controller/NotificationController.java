@@ -24,10 +24,16 @@ import ua.hnatiuk.dto.MessageDTO;
 @Tag(name = "NotificationController", description = "Controller for interactions with notification service")
 public class NotificationController {
     private final KafkaTemplate<String, MessageDTO> kafkaTemplate;
+
+    /**
+     * Sends "message to user" to kafka
+     * @param messageDTO MessageDTO
+     * @return 200 OK
+     */
     @PostMapping("/send")
     @Operation(summary = "Send message to user")
     @ApiResponse(responseCode = "200", description = "Message was successfully sent")
-    public ResponseEntity<?> sendMessage(@RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<Void> sendMessage(@RequestBody MessageDTO messageDTO) {
         log.debug("Received attempt to send message to chat id {}", messageDTO.getChatId());
         kafkaTemplate.send("carnotificator.telegram", messageDTO);
         log.debug("Sent message to Kafka");

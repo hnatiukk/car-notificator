@@ -26,6 +26,13 @@ public class PeopleRestController {
     private final PeopleService peopleService;
     @Value("${carnotificator.inner-api-key}")
     private String innerApiKey;
+
+    /**
+     * Assigns chat id to person my email
+     * @param innerKey Inner api key
+     * @param personDTO PersonDTO with email and chat id
+     * @return 200 OK, 400 Provided email is not registered, 403 Invalid inner api key
+     */
     @PostMapping("/assign-tg-chat-id")
     @Operation(summary = "Assign chat id")
     @ApiResponses(value = {

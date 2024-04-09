@@ -4,9 +4,9 @@ Web service that serves to send notifications about the availability of new cars
 - Java 21
 - Spring Framework
   - Spring Boot
+  - Spring Web
   - Spring Security
-  - Spring Data JPA
-  - Spring MVC
+  - Spring Data
   - Spring Test
 - Apache Maven
 - Hibernate

@@ -32,7 +32,10 @@ public class AutoRiaObserverService {
     private final AutoRiaClient autoRiaClient;
     private final NotificationService notificationService;
 
-    @Scheduled(fixedRate = 60 * 60 * 1000)
+    /**
+     * Checks for availability of new cars for sale 1 time per hour
+     */
+    @Scheduled(fixedRate = 60 * 60 * 1000) // 1 hour
     private void checkAll() {
         log.debug("Scheduled task started");
         List<SubscriptionDTO> subscriptions = subscriptionsService.getActiveSubscriptions();
@@ -42,6 +45,10 @@ public class AutoRiaObserverService {
                 .forEach(this::checkSubscription);
     }
 
+    /**
+     * Checks subscription
+     * @param subscription SubscriptionDTO to check
+     */
     private void checkSubscription(SubscriptionDTO subscription) {
         List<Integer> newCarIds = getNewCarIds(subscription);
 
@@ -57,12 +64,11 @@ public class AutoRiaObserverService {
         notifyAboutNewCars(newCarDTOs, subscription.getOwner().getTgChatId());
     }
 
-    private List<CarDTO> getNewCarDTOs(List<Integer> newCarIds) {
-        return newCarIds.stream()
-                .map(autoRiaClient::searchCar)
-                .toList();
-    }
-
+    /**
+     * Returns new car ids
+     * @param subscription SubscriptionDTO to get new car ids
+     * @return List of ids
+     */
     private List<Integer> getNewCarIds(SubscriptionDTO subscription) {
         AutoRiaRequestParams params = AutoRiaRequestParams.subscriptionToParams(subscription);
         String response = autoRiaClient.search(params, 3);
@@ -83,6 +89,22 @@ public class AutoRiaObserverService {
                 .toList();
     }
 
+    /**
+     * Returns new carDTOs
+     * @param newCarIds List of ids to get carDTOs
+     * @return List of new carDTOs
+     */
+    private List<CarDTO> getNewCarDTOs(List<Integer> newCarIds) {
+        return newCarIds.stream()
+                .map(autoRiaClient::searchCar)
+                .toList();
+    }
+
+    /**
+     * Notifies owner of subscription about new cars
+     * @param carDTOs carDTOs to notify with
+     * @param tgChatId Chat id of owner
+     */
     private void notifyAboutNewCars(List<CarDTO> carDTOs, Long tgChatId) {
         for (CarDTO carDTO : carDTOs) {
             String text = formMessage(carDTO);
@@ -92,6 +114,11 @@ public class AutoRiaObserverService {
         }
     }
 
+    /**
+     * Forms a message for user about new car
+     * @param carDTO CarDTO to form message from
+     * @return Message for owner
+     */
     private String formMessage(CarDTO carDTO) {
         return STR."""
                         Знайдено нову пропозицію!

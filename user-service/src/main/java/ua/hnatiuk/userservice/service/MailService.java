@@ -20,6 +20,11 @@ public class MailService {
 
     private final KafkaTemplate<String, MailDTO> kafkaTemplate;
 
+    /**
+     * Sends verification code and specified address to kafka
+     * @param toAddress Email address to send code
+     * @return Sent code
+     */
     public int sendVerificationCode(String toAddress) {
         int code = new Random().nextInt(100_000, 1_000_000);
 

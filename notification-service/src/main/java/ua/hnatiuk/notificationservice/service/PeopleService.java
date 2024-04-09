@@ -18,6 +18,11 @@ import ua.hnatiuk.notificationservice.feign.UserServiceClient;
 public class PeopleService {
     private final UserServiceClient userServiceClient;
 
+    /**
+     * Sends request to assign chat id
+     * @param email Email of person to assign
+     * @param chatId Chat id to assign
+     */
     public void assignChatId(String email, Long chatId){
         try (Response response = userServiceClient.assignTgChatId(new PersonDTO(email, chatId))){
             if (response.status() == 404) {

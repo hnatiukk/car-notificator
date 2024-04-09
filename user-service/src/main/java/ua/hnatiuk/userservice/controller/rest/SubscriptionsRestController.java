@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.hnatiuk.dto.SubscriptionDTO;
-import ua.hnatiuk.userservice.model.entity.Subscription;
 import ua.hnatiuk.userservice.model.mapper.SubscriptionMapper;
 import ua.hnatiuk.userservice.service.SubscriptionsService;
 
@@ -34,6 +33,13 @@ public class SubscriptionsRestController {
     private final SubscriptionMapper mapper;
     @Value("${carnotificator.inner-api-key}")
     private String innerApiKey;
+
+    /**
+     * Returns all subscriptions (only active/disabled)
+     * @param innerKey Inner api key
+     * @param onlyActive Active state of returning subscriptions
+     * @return List of subscriptionsDTOs, 200 OK, 403 Invalid inner api key
+     */
     @GetMapping
     @Operation(summary = "Get subscriptions")
     @ApiResponses(value = {

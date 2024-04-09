@@ -15,6 +15,11 @@ import ua.hnatiuk.dto.MessageDTO;
 @Slf4j
 public class TelegramNotificationListener implements NotificationListener {
     private final TelegramNotificationBot bot;
+
+    /**
+     * Consumes messages from kafka
+     * @param messageDTO MessageDTO
+     */
     @Override
     @KafkaListener(topics = "carnotificator.telegram", groupId = "main", containerFactory = "factory")
     public void sendNotificationWithPhoto(MessageDTO messageDTO) {

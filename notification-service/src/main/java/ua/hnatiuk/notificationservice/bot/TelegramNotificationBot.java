@@ -45,6 +45,10 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         this.peopleService = peopleService;
     }
 
+    /**
+     * Precesses incoming messages from users
+     * @param update Update object from user
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (!update.hasMessage() || !update.getMessage().isUserMessage() || !update.getMessage().hasText() || update.getMessage().getText().isEmpty())
@@ -67,6 +71,13 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Tries ti assign chat id and gets response for user
+     * @param userMessageText Text from user message
+     * @param chatId Chat id of user
+     * @return Response for user
+     */
     public String tryAssignChatId(String userMessageText, Long chatId) {
         String response;
 
@@ -91,6 +102,10 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         return response;
     }
 
+    /**
+     * Sends message with photo to user
+     * @param messageDTO MessageDTO
+     */
     public void sendMessageWithPhoto(MessageDTO messageDTO) {
         SendPhoto message = new SendPhoto();
         message.setPhoto(new InputFile(messageDTO.getPhotoUrl()));
@@ -106,11 +121,18 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Method needed by library
+     * @return Bot username
+     */
     @Override
     public String getBotUsername() {
         return "AutoRiaNotificatorBot";
     }
 
+    /**
+     * Registers bot on a bean creation
+     */
     @PostConstruct
     private void registerBot() {
         try {
@@ -122,6 +144,9 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
         }
     }
 
+    /**
+     * Stops bot session on a bean destroying
+     */
     @PreDestroy
     private void stopBotSession() {
         botSession.stop();

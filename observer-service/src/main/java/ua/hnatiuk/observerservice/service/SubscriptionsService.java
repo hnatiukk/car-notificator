@@ -17,6 +17,10 @@ import java.util.List;
 public class SubscriptionsService {
     private final UserServiceClient userServiceClient;
 
+    /**
+     * Returns all active subscriptions
+     * @return List of active subscriptionDTOs
+     */
     public List<SubscriptionDTO> getActiveSubscriptions() {
         log.debug("Getting all active subscriptions");
         return userServiceClient.findAll(true);

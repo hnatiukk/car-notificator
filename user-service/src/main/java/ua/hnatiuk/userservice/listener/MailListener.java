@@ -16,6 +16,10 @@ import ua.hnatiuk.dto.MailDTO;
 public class MailListener {
     private final JavaMailSender emailSender;
 
+    /**
+     * Consumes mails to send from kafka
+     * @param mailDTO DTO of mail message
+     */
     @KafkaListener(topics = "carnotificator.mail", groupId = "main", containerFactory = "factory")
     public void sendEmail(MailDTO mailDTO) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();

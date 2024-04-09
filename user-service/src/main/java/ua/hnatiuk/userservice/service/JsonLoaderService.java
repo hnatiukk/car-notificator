@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -29,6 +30,9 @@ public class JsonLoaderService {
     @Getter
     private final Map<String, Integer> models = new HashMap<>();
 
+    /**
+     * Fills 2 maps - brands and models on a bean creation
+     */
     @PostConstruct
     public void init() {
         try {
@@ -41,6 +45,7 @@ public class JsonLoaderService {
         }
     }
 
+    @SneakyThrows
     private void loadBrands() throws IOException {
 
         Resource resource = resourceLoader.getResource("classpath:static/json/marks.json");
@@ -48,6 +53,7 @@ public class JsonLoaderService {
         fillMap(resource, brands);
     }
 
+    @SneakyThrows
     private void loadModels() throws IOException {
 
         Resource resource = resourceLoader.getResource("classpath:static/json/models.json");
@@ -55,7 +61,13 @@ public class JsonLoaderService {
         fillMap(resource, models);
     }
 
-    private void fillMap(Resource resource, Map<String, Integer> map) throws IOException {
+    /**
+     * Fills map with (name, value) pairs
+     * @param resource Json file location resource
+     * @param map Map to fill
+     */
+    @SneakyThrows
+    private void fillMap(Resource resource, Map<String, Integer> map) {
         JsonNode jsonNode = objectMapper.readTree(resource.getInputStream());
 
         for (JsonNode entry : jsonNode) {

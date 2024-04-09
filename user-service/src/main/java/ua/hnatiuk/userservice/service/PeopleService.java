@@ -23,6 +23,11 @@ public class PeopleService {
     private final PeopleRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Registers new person
+     * @param person Person entity to register
+     * @return Saved person entity
+     */
     @Transactional
     public Person register(Person person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
@@ -32,9 +37,20 @@ public class PeopleService {
         return savedPerson;
     }
 
+    /**
+     * Finds person by email
+     * @param email Email of person to find
+     * @return Optional of found person
+     */
     public Optional<Person> findByEmail(String email) {
         return repository.findByEmail(email);
     }
+
+    /**
+     * Finds person by email and initialize his subscriptions
+     * @param email Email of person to find
+     * @return Found person entity
+     */
     public Person findByEmailAndInitSubscriptions(String email) {
         Person person = findByEmail(email).get();
 
@@ -43,11 +59,21 @@ public class PeopleService {
         return person;
     }
 
+    /**
+     * Initializes subscriptions for person
+     * @param person Person to initialize his subscriptions
+     */
     public void initSubscriptions(Person person) {
         Hibernate.initialize(person.getSubscriptions());
         log.debug("Initialized subscriptions for {}", person.getEmail());
     }
 
+    /**
+     * Assigns chat id to person by email
+     * @param email Email of person
+     * @param chatId Chat id to assign
+     * @return Updated person
+     */
     @Transactional
     public Person assignChatId(String email, Long chatId) {
         Optional<Person> personOptional = findByEmail(email);

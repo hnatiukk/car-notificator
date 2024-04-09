@@ -22,6 +22,12 @@ public class PersonDetailsService implements UserDetailsService {
 
     private final PeopleRepository repository;
 
+    /**
+     * Loads person by email
+     * @param email Email of person to load
+     * @return UserDetails object
+     * @throws UsernameNotFoundException When person with this email was not found
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Person person = repository.findByEmail(email).orElseThrow(() ->
