@@ -96,18 +96,12 @@ public class SubscriptionsRepositoryTest {
     @DisplayName("Test find all subscriptions functionality")
     public void givenSubscriptions_whenSaveAll_thenReturnAllSubscriptions() {
         // given
-        Person owner = DataUtils.getPersonPersisted();
-        peopleRepository.save(owner);
 
         Subscription subscription1 = DataUtils.getSubscriptionTransient();
         Subscription subscription2 = DataUtils.getSubscriptionTransient();
         Subscription subscription3 = DataUtils.getSubscriptionTransient();
 
         List<Subscription> subscriptionList = List.of(subscription1, subscription2, subscription3);
-        subscriptionList.forEach(s -> {
-            s.setOwner(owner);
-            owner.getSubscriptions().add(s);
-        });
 
         subscriptionsRepository.saveAll(subscriptionList);
 
@@ -123,9 +117,6 @@ public class SubscriptionsRepositoryTest {
     @DisplayName("Test find all by active subscriptions functionality")
     public void givenSubscriptions_whenSaveAll_thenReturnAllOnlyActiveSubscriptions() {
         // given
-        Person owner = DataUtils.getPersonPersisted();
-        peopleRepository.save(owner);
-
         Subscription subscription1 = DataUtils.getSubscriptionTransient();
         Subscription subscription2 = DataUtils.getSubscriptionTransient();
         Subscription subscription3 = DataUtils.getSubscriptionTransient();
@@ -133,7 +124,6 @@ public class SubscriptionsRepositoryTest {
         subscription2.setIsActive(false);
 
         List<Subscription> subscriptionList = List.of(subscription1, subscription2, subscription3);
-        subscriptionList.forEach(s -> s.setOwner(owner));
 
         subscriptionsRepository.saveAll(subscriptionList);
 
