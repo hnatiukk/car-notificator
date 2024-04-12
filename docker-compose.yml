@@ -10,6 +10,12 @@ services:
     restart: always
     volumes:
       - C:\docker-volumes\postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "car_notificator"]
+      interval: 20s
+      timeout: 100s
+      retries: 3
+      start_period: 40s
 
   kafka:
     image: bitnami/kafka:3.6.2
@@ -33,12 +39,15 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
-      - kafka
-      - project-builder
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      project-builder:
+        condition: service_started
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/car_notificator
-      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/car_notificator
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
 
@@ -47,7 +56,8 @@ services:
       context: observer-service
       dockerfile: Dockerfile
     depends_on:
-      - user-service
+      notification-service:
+        condition: service_started
     environment:
       FEIGN_NOTIFICATION_SERVICE_URL: notification-service:8081
       FEIGN_USER_SERVICE_URL: user-service:8080
@@ -57,7 +67,8 @@ services:
       context: notification-service
       dockerfile: Dockerfile
     depends_on:
-      - user-service
+      user-service:
+        condition: service_started
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       FEIGN_USER-SERVICE_URL: user-service:8080
