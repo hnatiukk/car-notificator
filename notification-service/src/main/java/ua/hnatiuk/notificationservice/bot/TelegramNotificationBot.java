@@ -73,12 +73,12 @@ public class TelegramNotificationBot extends TelegramLongPollingBot {
     }
 
     /**
-     * Tries ti assign chat id and gets response for user
+     * Tries to assign chat id and gets response for user
      * @param userMessageText Text from user message
      * @param chatId Chat id of user
      * @return Response for user
      */
-    public String tryAssignChatId(String userMessageText, Long chatId) {
+    private String tryAssignChatId(String userMessageText, Long chatId) {
         String response;
 
         if (userMessageText.startsWith("/link")) {
