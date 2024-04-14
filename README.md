@@ -6,12 +6,13 @@
   - Spring Boot
   - Spring Web
   - Spring Security
-  - Spring Data
+  - Spring Data JPA
   - Spring Test
 - Apache Maven
 - Hibernate
 - PostgreSQL
 - Apache Kafka
+- Docker
 - Flyway
 - Thymeleaf
 - Tailwind CSS
